@@ -1,5 +1,5 @@
 #include "Vector3D.h"
-#include <math.h>
+#include <cmath>
 
 void Vector3D::normalize()
 {
@@ -22,26 +22,46 @@ double Vector3D::dot(const Vector3D& v) const
 
 Vector3D Vector3D::cross(const Vector3D& v) const
 {
-	//TODO
-	return Vector3D();
+	return {
+		y_ * v.z_ - z_ * v.y_,  
+		z_ * v.x_ - x_ * v.z_,  
+		x_ * v.y_ - y_ * v.x_
+	};
+
 }
 
 Vector3D& Vector3D::operator=(const Vector3D& v)
 {
-	return Vector3D(v.x_, v.y_, v.z_);
+	x_ = v.x_;
+	y_ = v.y_;
+	z_ = v.z_;
+
+	return *this;
 }
 
-Vector3D Vector3D::operator+(const Vector3D& v) const
+Vector3D Vector3D::operator+(const Vector3D& v)
 {
-	return Vector3D(x_ + v.x_, y_ + v.y_, z_ + v.z_);
+	x_ += v.x_;
+	y_ += v.y_;
+	z_ += v.z_;
+
+	return *this;
 }
 
-Vector3D Vector3D::operator-(const Vector3D& v) const
+Vector3D Vector3D::operator-(const Vector3D& v)
 {
-	return Vector3D(x_ - v.x_, y_ - v.y_, z_ - v.z_);
+	x_ -= v.x_;
+	y_ -= v.y_;
+	z_ -= v.z_;
+
+	return *this;
 }
 
-Vector3D Vector3D::operator*(const double d) const
+Vector3D Vector3D::operator*(const double d)
 {
-	return Vector3D(x_ * d, y_ * d, z_ * d);
+	x_ *= d;
+	y_ *= d;
+	z_ *= d;
+
+	return *this;
 }

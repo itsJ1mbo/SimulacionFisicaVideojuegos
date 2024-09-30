@@ -13,8 +13,8 @@ public:
 	double dot(const Vector3D& v) const;
 	Vector3D cross(const Vector3D& v) const;
 	Vector3D& operator=(const Vector3D& v);
-	Vector3D operator+(const Vector3D& v) const;
-	Vector3D operator-(const Vector3D& v) const;
-	Vector3D operator*(const double d) const;
+	Vector3D operator+(const Vector3D& v);
+	Vector3D operator-(const Vector3D& v);
+	Vector3D operator*(const double d);
 };
 
