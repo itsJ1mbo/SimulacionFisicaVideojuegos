@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "Particle.h"
+
 std::string display_text = "This is a test";
 
 
@@ -31,6 +33,8 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 PxSphereGeometry* gSphere = NULL;
+
+Particle* p = nullptr;
 
 
 // Initialize physics engine
@@ -57,8 +61,10 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	gSphere = new PxSphereGeometry(10);
-	RenderItem const * sphere = new RenderItem(CreateShape(*gSphere), new PxTransform(0.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 1.0));
+	//gSphere = new PxSphereGeometry(10);
+	//RenderItem const * sphere = new RenderItem(CreateShape(*gSphere), new PxTransform(0.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 1.0));
+
+	p = new Particle(PxVec3(0, 0, 0), PxVec3(1, 0, 0));
 }
 
 
@@ -71,13 +77,16 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+	p->integrate(t);
 }
 
 // Function to clean data
 // Add custom code to the begining of the function
 void cleanupPhysics(bool interactive)
 {
-	delete gSphere;
+	//delete gSphere;
+	delete p;
 
 	PX_UNUSED(interactive);
 
