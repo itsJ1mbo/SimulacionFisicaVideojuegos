@@ -10,9 +10,11 @@ public:
 	~Particle();
 
 	void integrate(double t);
+	void accelerate(Vector3 a);
 
 private:
 	physx::PxVec3 vel_;
+	physx::PxVec3 acc_;
 	physx::PxTransform* pos_;
 	RenderItem* ri_;
 };
