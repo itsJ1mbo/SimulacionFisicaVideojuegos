@@ -34,6 +34,7 @@ ContactReportCallback gContactReportCallback;
 
 PxSphereGeometry* gSphere = NULL;
 
+std::vector<Particle*> vParticles_;
 Particle* p = nullptr;
 
 
@@ -64,7 +65,7 @@ void initPhysics(bool interactive)
 	//gSphere = new PxSphereGeometry(10);
 	//RenderItem const * sphere = new RenderItem(CreateShape(*gSphere), new PxTransform(0.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 1.0));
 
-	p = new Particle(PxVec3(0, 0, 0), PxVec3(1, 0, 0), 0.5);
+	//p = new Particle(PxVec3(0, 0, 0), PxVec3(10, sceneDesc.gravity.y, 0), 0.5, 1);
 }
 
 
@@ -78,7 +79,11 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	p->integrate(t);
+	//p->integrate(t);
+	for(const auto a : vParticles_)
+	{
+		a->integrate(t);
+	}
 }
 
 // Function to clean data
@@ -109,11 +114,17 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	//case ' ':	break;
-	case 'a':
+		//case 'B': break;	
+		//case ' ':	break;
+	case ' ':
 	{
-		p->accelerate(Vector3(1, 0, 0));
+		break;
+	}
+	case 'A':
+	{
+		std::cout << "Proyectil" << "\n";
+		Particle* particle = new Particle(GetCamera()->getTransform().p, PxVec3(25 * GetCamera()->getDir().x, gScene->getGravity().y, 0), 0.99, 7000);
+		vParticles_.push_back(particle);
 		break;
 	}
 	default:

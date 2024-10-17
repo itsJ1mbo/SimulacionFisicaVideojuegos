@@ -6,7 +6,7 @@
 class Particle
 {
 public:
-	Particle(physx::PxVec3 pos, physx::PxVec3 acc, double d);
+	Particle(physx::PxVec3 pos, physx::PxVec3 acc, double d, double m);
 	~Particle();
 
 	void integrate(const double t);
@@ -18,6 +18,7 @@ private:
 	physx::PxTransform* pos_;
 
 	double damp_;
+	double mass_;
 
 	RenderItem* ri_;
 };
