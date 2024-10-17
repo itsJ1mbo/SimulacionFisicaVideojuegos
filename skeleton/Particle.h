@@ -6,16 +6,19 @@
 class Particle
 {
 public:
-	Particle(physx::PxVec3 pos, physx::PxVec3 vel);
+	Particle(physx::PxVec3 pos, physx::PxVec3 acc, double d);
 	~Particle();
 
-	void integrate(double t);
-	void accelerate(Vector3 a);
+	void integrate(const double t);
+	void accelerate(const Vector3& a);
 
 private:
 	physx::PxVec3 vel_;
 	physx::PxVec3 acc_;
 	physx::PxTransform* pos_;
+
+	double damp_;
+
 	RenderItem* ri_;
 };
 

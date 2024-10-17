@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include <iostream>
 
-Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel) : vel_(0, 0, 0), acc_(vel) 
+Particle::Particle(physx::PxVec3 pos, physx::PxVec3 acc, double d) : vel_(0, 0, 0), acc_(acc), damp_(d)
 {
 	pos_ = new physx::PxTransform(pos);
 
@@ -20,18 +20,16 @@ Particle::~Particle()
 	DeregisterRenderItem(ri_);
 }
 
-void Particle::integrate(double t)
+void Particle::integrate(const double t)
 {
-	vel_ = acc_ * t;
-	pos_->p += vel_ * t;
+	vel_ = vel_ * pow(damp_, t) + acc_ * t;
 
-	std::cout << acc_.x << std::endl;
+	pos_->p += vel_ * t;
 }
 
-void Particle::accelerate(Vector3 a)
+void Particle::accelerate(const Vector3& a)
 {
 	acc_ = a;
-	std::cout << acc_.x << std::endl;
 }
 
 

@@ -64,7 +64,7 @@ void initPhysics(bool interactive)
 	//gSphere = new PxSphereGeometry(10);
 	//RenderItem const * sphere = new RenderItem(CreateShape(*gSphere), new PxTransform(0.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 1.0));
 
-	p = new Particle(PxVec3(0, 0, 0), PxVec3(0, 0, 0));
+	p = new Particle(PxVec3(0, 0, 0), PxVec3(1, 0, 0), 0.5);
 }
 
 
