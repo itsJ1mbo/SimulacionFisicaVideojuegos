@@ -65,7 +65,7 @@ void initPhysics(bool interactive)
 	//gSphere = new PxSphereGeometry(10);
 	//RenderItem const * sphere = new RenderItem(CreateShape(*gSphere), new PxTransform(0.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 1.0));
 
-	p = new Particle(PxVec3(0, 0, 0), PxVec3(10, sceneDesc.gravity.y, 0), 0.5, 1);
+	//p = new Particle(PxVec3(0, 0, 0), PxVec3(10, sceneDesc.gravity.y, 0), 0.5, 1);
 }
 
 
@@ -91,7 +91,9 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	//delete gSphere;
-	delete p;
+	//delete p;
+	for (auto a : vParticles_)
+		delete a;
 
 	PX_UNUSED(interactive);
 
@@ -117,7 +119,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'F':
 	{
 		std::cout << "Proyectil" << "\n";
-		Particle* particle = new Particle(GetCamera()->getTransform().p, PxVec3(25 * GetCamera()->getDir().x, gScene->getGravity().y, 0), 0.99, 7000);
+		Particle* particle = new Particle(GetCamera()->getTransform().p, PxVec3(25 * GetCamera()->getDir().x, 25 * GetCamera()->getDir().y + gScene->getGravity().y, GetCamera()->getDir().z * 25), 0.99, 7000);
 		vParticles_.push_back(particle);
 		break;
 	}
