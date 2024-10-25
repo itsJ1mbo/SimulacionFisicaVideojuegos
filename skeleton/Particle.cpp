@@ -1,14 +1,14 @@
 #include "Particle.h"
 #include <iostream>
 
-Particle::Particle(physx::PxVec3 pos, physx::PxVec3 acc, double d, double m) : vel_(0, 0, 0), acc_(acc), damp_(d), mass_(m)
+Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, double d, double m) : vel_(vel), acc_(0, 0, 0), damp_(d), mass_(m)
 {
 	pos_ = new physx::PxTransform(pos);
 
-	const physx::PxSphereGeometry sphere(10);
+	const physx::PxSphereGeometry sphere(5);
 	physx::PxShape* shape = CreateShape(sphere);
 
-	ri_ = new RenderItem(shape, pos_, Vector4(1.0, 0.0, 0.0, 1.0));
+	ri_ = new RenderItem(shape, pos_, Vector4(0.75, 0.75, 0.75, 1));
 
 	RegisterRenderItem(ri_);
 }
@@ -28,9 +28,11 @@ void Particle::integrate(const double t)
 	pos_->p += vel_ * t;
 }
 
-void Particle::accelerate(const Vector3& a)
+void Particle::update(double t)
 {
-	acc_ = a;
+	integrate(t);
+
+	lifeTime_++;
 }
 
 

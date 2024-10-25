@@ -6,13 +6,17 @@
 class Particle
 {
 public:
-	Particle(physx::PxVec3 pos, physx::PxVec3 acc, double d, double m);
+	Particle(physx::PxVec3 pos, physx::PxVec3 vel, double d, double m);
 	~Particle();
 
 	void integrate(const double t);
-	void accelerate(const Vector3& a);
+	void update(double t);
+
+	int time_alive() const { return lifeTime_; }
 
 private:
+	int lifeTime_ = 0;
+
 	physx::PxVec3 vel_;
 	physx::PxVec3 acc_;
 	physx::PxTransform* pos_;

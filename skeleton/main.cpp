@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "Particle.h"
+#include "AliExpressParticleSystem.h"
 
 std::string display_text = "This is a test";
 
@@ -36,6 +37,8 @@ PxSphereGeometry* gSphere = NULL;
 
 std::vector<Particle*> vParticles_;
 Particle* p = nullptr;
+
+AliExpressParticleSystem* ps = nullptr;
 
 
 // Initialize physics engine
@@ -66,6 +69,8 @@ void initPhysics(bool interactive)
 	//RenderItem const * sphere = new RenderItem(CreateShape(*gSphere), new PxTransform(0.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 1.0));
 
 	//p = new Particle(PxVec3(0, 0, 0), PxVec3(10, sceneDesc.gravity.y, 0), 0.5, 1);
+
+	ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0));
 }
 
 
@@ -78,6 +83,10 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+	
+	ps->generate();
+
+	ps->update(t);
 
 	//p->integrate(t);
 	for(const auto a : vParticles_)
@@ -118,9 +127,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	case 'F':
 	{
-		std::cout << "Proyectil" << "\n";
-		Particle* particle = new Particle(GetCamera()->getTransform().p, PxVec3(25 * GetCamera()->getDir().x, 25 * GetCamera()->getDir().y + gScene->getGravity().y, GetCamera()->getDir().z * 25), 0.99, 7000);
-		vParticles_.push_back(particle);
+		ps->generate();
 		break;
 	}
 	case ' ':
