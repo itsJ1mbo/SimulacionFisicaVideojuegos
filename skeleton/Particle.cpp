@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include <iostream>
 
-Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, double d, double m) : vel_(vel), acc_(0, 0, 0), damp_(d), mass_(m)
+Particle::Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, const physx::PxVec3& acc, double d, double m) : lifeTime_(0), vel_(vel), acc_(acc), damp_(d), mass_(m)
 {
 	pos_ = new physx::PxTransform(pos);
 
@@ -16,9 +16,10 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, double d, double m) : v
 Particle::~Particle()
 {
 	DeregisterRenderItem(ri_);
+	ri_ = nullptr;
 
-	delete ri_;
 	delete pos_;
+	pos_ = nullptr;
 }
 
 void Particle::integrate(const double t)
@@ -32,7 +33,7 @@ void Particle::update(double t)
 {
 	integrate(t);
 
-	lifeTime_++;
+	lifeTime_ += t;
 }
 
 

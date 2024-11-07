@@ -83,16 +83,14 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	
-	ps->generate();
 
 	ps->update(t);
 
 	//p->integrate(t);
-	for(const auto a : vParticles_)
+	/*for(const auto a : vParticles_)
 	{
 		a->integrate(t);
-	}
+	}*/
 }
 
 // Function to clean data
@@ -101,8 +99,8 @@ void cleanupPhysics(bool interactive)
 {
 	//delete gSphere;
 	//delete p;
-	for (auto a : vParticles_)
-		delete a;
+	/*for (auto a : vParticles_)
+		delete a;*/
 
 	PX_UNUSED(interactive);
 
@@ -127,7 +125,6 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	case 'F':
 	{
-		ps->generate();
 		break;
 	}
 	case ' ':
