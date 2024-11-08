@@ -24,7 +24,7 @@ AliExpressParticleSystem::~AliExpressParticleSystem()
 void AliExpressParticleSystem::generate()
 {
 	particle_properties();
-	Particle* particle = new Particle(tr_->p, vel_by_distribution(), radius_, physx::PxVec3(0, -9.8, 0), 0.99, 7000, color_);
+	Particle* particle = new Particle(tr_->p, vel_by_distribution(), radius_, physx::PxVec3(0, 0, 0), 0.99, 1, color_);
 	particles_.push_back(particle);
 }
 

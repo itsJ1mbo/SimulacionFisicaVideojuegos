@@ -14,6 +14,8 @@ public:
 
 	void update(double t);
 
+	std::list<Particle*> particles() { return particles_; }
+
 private:
 	char tipo_;
 	int lifeTime_;

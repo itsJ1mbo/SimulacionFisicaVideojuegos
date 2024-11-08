@@ -12,6 +12,7 @@
 
 #include "Particle.h"
 #include "AliExpressParticleSystem.h"
+#include "Gravity.h"
 
 std::string display_text = "This is a test";
 
@@ -39,6 +40,7 @@ std::vector<Particle*> vParticles_;
 Particle* p = nullptr;
 
 AliExpressParticleSystem* ps = nullptr;
+ForceGenerator* gravity = nullptr;
 
 
 // Initialize physics engine
@@ -64,6 +66,8 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+
+	gravity = new Gravity();
 }
 
 
@@ -78,6 +82,7 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 
 	if (ps != nullptr) ps->update(t);
+	gravity->apply_force();
 
 	//p->integrate(t);
 	/*for(const auto a : vParticles_)
@@ -120,6 +125,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'f');
+		gravity->register_system(ps);
 		break;
 	}
 	case 'N':

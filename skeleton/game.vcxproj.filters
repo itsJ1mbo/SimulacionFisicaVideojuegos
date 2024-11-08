@@ -13,6 +13,8 @@
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="AliExpressParticleSystem.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="Gravity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -27,6 +29,8 @@
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="AliExpressParticleSystem.h" />
+    <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="Gravity.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
