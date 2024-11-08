@@ -9,23 +9,27 @@ class Particle;
 class AliExpressParticleSystem
 {
 public:
-	AliExpressParticleSystem(const physx::PxVec3& pos, char t = 'e');
+	AliExpressParticleSystem(const physx::PxVec3& pos, const char t = 'e');
 	~AliExpressParticleSystem();
 
 	void update(double t);
 
 private:
+	char tipo_;
 	int lifeTime_;
 
 	physx::PxTransform* tr_;
 	std::list<Particle*> particles_;
 
+	physx::PxVec3 vel_;
+	int radius_;
+	physx::PxVec4 color_;
+
 	std::random_device rd{};
 	std::mt19937 gen{ rd() };
-	std::normal_distribution<float> nx_;
-	std::normal_distribution<float> ny_;
-	std::normal_distribution<float> nz_;
 
 	void generate();
+	physx::PxVec3 vel_by_distribution();
+	void particle_properties();
 };
 

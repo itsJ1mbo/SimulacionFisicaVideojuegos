@@ -70,7 +70,7 @@ void initPhysics(bool interactive)
 
 	//p = new Particle(PxVec3(0, 0, 0), PxVec3(10, sceneDesc.gravity.y, 0), 0.5, 1);
 
-	ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0));
+	ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'f');
 }
 
 
