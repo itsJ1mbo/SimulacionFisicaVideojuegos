@@ -69,8 +69,6 @@ void initPhysics(bool interactive)
 	//RenderItem const * sphere = new RenderItem(CreateShape(*gSphere), new PxTransform(0.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 1.0));
 
 	//p = new Particle(PxVec3(0, 0, 0), PxVec3(10, sceneDesc.gravity.y, 0), 0.5, 1);
-
-	ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'f');
 }
 
 
@@ -84,7 +82,7 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	ps->update(t);
+	if (ps != nullptr) ps->update(t);
 
 	//p->integrate(t);
 	/*for(const auto a : vParticles_)
@@ -125,10 +123,20 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	case 'F':
 	{
+		if (ps != nullptr) delete ps;
+		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'f');
 		break;
 	}
-	case ' ':
+	case 'N':
 	{
+		if (ps != nullptr) delete ps;
+		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'n');
+		break;
+	}
+	case 'E':
+	{
+		if (ps != nullptr) delete ps;
+		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'e');
 		break;
 	}
 	default:

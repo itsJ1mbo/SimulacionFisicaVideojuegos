@@ -9,8 +9,6 @@ Particle::Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, int r, co
 	physx::PxShape* shape = CreateShape(sphere);
 
 	ri_ = new RenderItem(shape, pos_, color);
-
-	RegisterRenderItem(ri_);
 }
 
 Particle::~Particle()
