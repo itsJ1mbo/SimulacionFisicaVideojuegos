@@ -13,7 +13,7 @@ public:
 
 	int time_alive() const { return lifeTime_; }
 	double mass() { return mass_; }
-	void apply_force(physx::PxVec3& f) { force_ = f; };
+	void apply_force(physx::PxVec3& f) { force_ = f; }
 
 private:
 	void integrate(const double t);

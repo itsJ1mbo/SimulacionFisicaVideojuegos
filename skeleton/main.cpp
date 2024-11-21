@@ -81,8 +81,8 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	if (ps != nullptr) ps->update(t);
 	gravity->apply_force();
+	if (ps != nullptr) ps->update(t);
 
 	//p->integrate(t);
 	/*for(const auto a : vParticles_)

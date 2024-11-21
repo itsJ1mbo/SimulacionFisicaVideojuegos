@@ -4,7 +4,7 @@
 
 #include "Particle.h"
 
-AliExpressParticleSystem::AliExpressParticleSystem(const physx::PxVec3& pos, char t) : lifeTime_(3), tipo_(t), color_()
+AliExpressParticleSystem::AliExpressParticleSystem(const physx::PxVec3& pos, char t) : lifeTime_(19), tipo_(t), color_()
 {
 	tr_ = new physx::PxTransform(pos);
 }
