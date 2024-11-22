@@ -7,7 +7,7 @@ Wind::Wind(const physx::PxVec3& vel, double k1, double k2, const physx::PxVec3& 
 	
 }
 
-void Wind::apply_force()
+void Wind::apply_force(double t)
 {
 	for (const auto ps : _ps)
 	{
@@ -15,9 +15,9 @@ void Wind::apply_force()
 		{
 			if(is_under_effect(p->position())) 
 			{
-				physx::PxVec3 diffVel = _windVel - p->velocity();
+				const physx::PxVec3 diffVel = _windVel - p->velocity();
 				const double magnitude = diffVel.magnitude();
-				physx::PxVec3 windForce = _k1 * diffVel + _k2 * magnitude * diffVel;
+				const physx::PxVec3 windForce = _k1 * diffVel + _k2 * magnitude * diffVel;
 
 				p->apply_force(windForce);
 			}

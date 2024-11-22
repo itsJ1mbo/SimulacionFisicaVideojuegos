@@ -8,7 +8,7 @@ public:
 	virtual ~ForceGenerator() = default;
 	ForceGenerator() = default;
 
-	virtual void apply_force() = 0;
+	virtual void apply_force(double t) = 0;
 	void register_system(AliExpressParticleSystem* ps) { _ps.push_back(ps); }
 protected:
 	std::list<AliExpressParticleSystem*> _ps;

@@ -17,6 +17,7 @@
     <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="Wind.cpp" />
     <ClCompile Include="U:\hlocal\SimulacionFisicaVideojuegos\skeleton\Whirlwind.cpp" />
+    <ClCompile Include="U:\hlocal\SimulacionFisicaVideojuegos\skeleton\Explosion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="Gravity.h" />
     <ClInclude Include="Wind.h" />
     <ClInclude Include="U:\hlocal\SimulacionFisicaVideojuegos\skeleton\Whirlwind.h" />
+    <ClInclude Include="U:\hlocal\SimulacionFisicaVideojuegos\skeleton\Explosion.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
