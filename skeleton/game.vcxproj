@@ -262,6 +262,7 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="U:\hlocal\SimulacionFisicaVideojuegos\skeleton\Whirlwind.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Wind.cpp" />
   </ItemGroup>
@@ -275,6 +276,7 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="U:\hlocal\SimulacionFisicaVideojuegos\skeleton\Whirlwind.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Wind.h" />
   </ItemGroup>

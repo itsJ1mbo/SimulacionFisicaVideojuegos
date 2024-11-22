@@ -14,6 +14,7 @@
 #include "AliExpressParticleSystem.h"
 #include "Gravity.h"
 #include "Wind.h"
+#include "Whirlwind.h"
 
 std::string display_text = "This is a test";
 
@@ -43,6 +44,7 @@ Particle* p = nullptr;
 AliExpressParticleSystem* ps = nullptr;
 ForceGenerator* gravity = nullptr;
 ForceGenerator* wind = nullptr;
+ForceGenerator* whirlwind = nullptr;
 
 
 // Initialize physics engine
@@ -71,6 +73,7 @@ void initPhysics(bool interactive)
 
 	gravity = new Gravity();
 	wind = new Wind(Vector3(-20, 0, 0), 0.5, 0.1, Vector3(100, -120, -120), Vector3(120, 120, 120));
+	whirlwind = new Whirlwind(0.5, 0.1, Vector3(-100, -100, -100), Vector3(100, 100, 100), 2, Vector3(0, 0, 0));
 }
 
 
@@ -86,6 +89,7 @@ void stepPhysics(bool interactive, double t)
 
 	gravity->apply_force();
 	wind->apply_force();
+	whirlwind->apply_force();
 	if (ps != nullptr) ps->update(t);
 
 	//p->integrate(t);
@@ -136,6 +140,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'n');
+		whirlwind->register_system(ps);
 		break;
 	}
 	case 'E':

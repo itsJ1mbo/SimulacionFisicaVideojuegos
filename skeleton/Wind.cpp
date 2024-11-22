@@ -13,7 +13,8 @@ void Wind::apply_force()
 	{
 		for (const auto p : ps->particles())
 		{
-			if(is_under_effect(p->position())) {
+			if(is_under_effect(p->position())) 
+			{
 				physx::PxVec3 diffVel = _windVel - p->velocity();
 				const double magnitude = diffVel.magnitude();
 				physx::PxVec3 windForce = _k1 * diffVel + _k2 * magnitude * diffVel;
