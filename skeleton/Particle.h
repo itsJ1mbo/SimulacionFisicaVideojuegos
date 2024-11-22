@@ -11,23 +11,27 @@ public:
 
 	void update(double t);
 
-	int time_alive() const { return lifeTime_; }
-	double mass() { return mass_; }
-	void apply_force(physx::PxVec3& f) { force_ = f; }
+	double time_alive() const { return _lifeTime; }
+
+	double mass() const { return _mass; }
+	Vector3 velocity() const { return _vel; }
+	Vector3 position() const { return _pos->p; }
+
+	void apply_force(const physx::PxVec3& f) { _force = f; }
 
 private:
 	void integrate(const double t);
 
-	double lifeTime_;
+	double _lifeTime;
 
-	physx::PxVec3 vel_;
-	physx::PxVec3 force_;
-	physx::PxVec3 acc_;
-	physx::PxTransform* pos_;
+	physx::PxVec3 _vel;
+	physx::PxVec3 _force;
+	physx::PxVec3 _acc;
+	physx::PxTransform* _pos;
 
-	double damp_;
-	double mass_;
+	double _damp;
+	double _mass;
 
-	RenderItem* ri_;
+	RenderItem* _ri;
 };
 

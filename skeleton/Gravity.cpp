@@ -1,17 +1,17 @@
 #include "Gravity.h"
 #include "Particle.h"
 
-Gravity::Gravity() : gravity_(0, -9.8, 0)
+Gravity::Gravity() : _gravity(0, -9.8f, 0)
 {
 }
 
 void Gravity::apply_force()
 {
-	for (auto ps : ps_) 
+	for (const auto ps : _ps) 
 	{
-		for (auto p : ps->particles()) 
+		for (const auto p : ps->particles()) 
 		{
-			physx::PxVec3 gravityForce = (p->mass() * gravity_);
+			physx::PxVec3 gravityForce = p->mass() * _gravity;
 			p->apply_force(gravityForce);
 		}
 	}

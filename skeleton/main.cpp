@@ -13,6 +13,7 @@
 #include "Particle.h"
 #include "AliExpressParticleSystem.h"
 #include "Gravity.h"
+#include "Wind.h"
 
 std::string display_text = "This is a test";
 
@@ -41,6 +42,7 @@ Particle* p = nullptr;
 
 AliExpressParticleSystem* ps = nullptr;
 ForceGenerator* gravity = nullptr;
+ForceGenerator* wind = nullptr;
 
 
 // Initialize physics engine
@@ -68,6 +70,7 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	gravity = new Gravity();
+	wind = new Wind(Vector3(-20, 0, 0), 0.5, 0.1, Vector3(100, -120, -120), Vector3(120, 120, 120));
 }
 
 
@@ -82,6 +85,7 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 
 	gravity->apply_force();
+	wind->apply_force();
 	if (ps != nullptr) ps->update(t);
 
 	//p->integrate(t);
@@ -138,6 +142,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'e');
+		wind->register_system(ps);
 		break;
 	}
 	default:

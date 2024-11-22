@@ -2,11 +2,11 @@
 class Vector3D
 {
 private:
-	double x_, y_, z_;
+	double _x, _y, _z;
 
 public:
-	Vector3D() noexcept : x_(0), y_(0), z_(0) {}
-	Vector3D(double x, double y, double z) noexcept : x_(x), y_(y), z_(z) {}
+	Vector3D() noexcept : _x(0), _y(0), _z(0) {}
+	Vector3D(double x, double y, double z) noexcept : _x(x), _y(y), _z(z) {}
 
 	void normalize();
 	double module() const;

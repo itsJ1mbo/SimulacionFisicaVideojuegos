@@ -5,63 +5,63 @@ void Vector3D::normalize()
 {
 	const double m = module();
 
-	x_ /= m;
-	y_ /= m;
-	z_ /= m;
+	_x /= m;
+	_y /= m;
+	_z /= m;
 }
 
 double Vector3D::module() const
 {
-	return sqrt(pow(x_, 2) + pow(y_, 2) + pow(z_, 2));
+	return sqrt(pow(_x, 2) + pow(_y, 2) + pow(_z, 2));
 }
 
 double Vector3D::dot(const Vector3D& v) const
 {
-	return x_ * v.x_ + y_ * v.y_ + z_ * v.z_;
+	return _x * v._x + _y * v._y + _z * v._z;
 }
 
 Vector3D Vector3D::cross(const Vector3D& v) const
 {
 	return {
-		y_ * v.z_ - z_ * v.y_,  
-		z_ * v.x_ - x_ * v.z_,  
-		x_ * v.y_ - y_ * v.x_
+		_y * v._z - _z * v._y,  
+		_z * v._x - _x * v._z,  
+		_x * v._y - _y * v._x
 	};
 
 }
 
 Vector3D& Vector3D::operator=(const Vector3D& v)
 {
-	x_ = v.x_;
-	y_ = v.y_;
-	z_ = v.z_;
+	_x = v._x;
+	_y = v._y;
+	_z = v._z;
 
 	return *this;
 }
 
 Vector3D Vector3D::operator+(const Vector3D& v)
 {
-	x_ += v.x_;
-	y_ += v.y_;
-	z_ += v.z_;
+	_x += v._x;
+	_y += v._y;
+	_z += v._z;
 
 	return *this;
 }
 
 Vector3D Vector3D::operator-(const Vector3D& v)
 {
-	x_ -= v.x_;
-	y_ -= v.y_;
-	z_ -= v.z_;
+	_x -= v._x;
+	_y -= v._y;
+	_z -= v._z;
 
 	return *this;
 }
 
 Vector3D Vector3D::operator*(const double d)
 {
-	x_ *= d;
-	y_ *= d;
-	z_ *= d;
+	_x *= d;
+	_y *= d;
+	_z *= d;
 
 	return *this;
 }

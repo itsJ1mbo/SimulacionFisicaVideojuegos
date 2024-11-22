@@ -15,6 +15,7 @@
     <ClCompile Include="AliExpressParticleSystem.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="Gravity.cpp" />
+    <ClCompile Include="Wind.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -31,6 +32,7 @@
     <ClInclude Include="AliExpressParticleSystem.h" />
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="Gravity.h" />
+    <ClInclude Include="Wind.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

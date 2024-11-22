@@ -2,41 +2,41 @@
 #include <iostream>
 
 Particle::Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, int r, const physx::PxVec3& acc, double d, double m, physx::PxVec4 color) : 
-	lifeTime_(0), vel_(vel), acc_(acc), force_(0, 0, 0), damp_(d), mass_(m)
+	_lifeTime(0), _vel(vel), _force(0, 0, 0), _acc(acc), _damp(d), _mass(m)
 {
-	pos_ = new physx::PxTransform(pos);
+	_pos = new physx::PxTransform(pos);
 
 	const physx::PxSphereGeometry sphere(r);
 	physx::PxShape* shape = CreateShape(sphere);
 
-	ri_ = new RenderItem(shape, pos_, color);
+	_ri = new RenderItem(shape, _pos, color);
 }
 
 Particle::~Particle()
 {
-	DeregisterRenderItem(ri_);
-	ri_ = nullptr;
+	DeregisterRenderItem(_ri);
+	_ri = nullptr;
 
-	delete pos_;
-	pos_ = nullptr;
+	delete _pos;
+	_pos = nullptr;
 }
 
 void Particle::integrate(const double t)
 {
-	vel_ = vel_ * pow(damp_, t) + acc_ * t;
+	_vel = _vel * pow(_damp, t) + _acc * t;
 
-	vel_ += force_;
+	_vel += _force;
 
-	pos_->p += vel_ * t;
+	_pos->p += _vel * t;
 
-	vel_ -= force_;
+	_vel -= _force;
 }
 
-void Particle::update(double t)
+void Particle::update(const double t)
 {
 	integrate(t);
 
-	lifeTime_ += t;
+	_lifeTime += t;
 }
 
 

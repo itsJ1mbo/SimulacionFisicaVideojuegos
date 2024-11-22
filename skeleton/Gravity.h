@@ -8,6 +8,6 @@ public:
 	void apply_force() override;
 
 private:
-	physx::PxVec3 gravity_;
+	physx::PxVec3 _gravity;
 };
 
