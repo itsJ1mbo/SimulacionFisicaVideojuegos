@@ -5,7 +5,7 @@ class Wind : public ForceGenerator
 {
 public:
 	Wind(const physx::PxVec3& vel, double k1, double k2, const physx::PxVec3& min, const physx::PxVec3& max);
-	void apply_force(double t) override;
+	void apply_force(double t) const override;
 
 protected:
 	bool is_under_effect(const physx::PxVec3& pos) const;

@@ -45,13 +45,14 @@ physx::PxVec3 AliExpressParticleSystem::vel_by_distribution()
 
 		return physx::PxVec3(x(_gen), y(_gen), z(_gen));
 	}
-	if (_tipo == 'n') {
+	else if (_tipo == 'n') {
 		std::normal_distribution<float> x(0, 5);
 		std::normal_distribution<float> y(10, 1);
 		std::normal_distribution<float> z(0, 5);
 
 		return physx::PxVec3(x(_gen), y(_gen), z(_gen));
 	}
+	else return {};
 }
 
 void AliExpressParticleSystem::particle_properties()

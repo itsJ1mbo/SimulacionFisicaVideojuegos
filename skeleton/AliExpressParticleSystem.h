@@ -14,7 +14,7 @@ public:
 
 	void update(double t);
 
-	std::list<Particle*> particles() { return _particles; }
+	std::list<Particle*> particles() const { return _particles; }
 
 private:
 	char _tipo;
