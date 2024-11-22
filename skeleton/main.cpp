@@ -77,7 +77,7 @@ void initPhysics(bool interactive)
 	gravity = new Gravity();
 	wind = new Wind(Vector3(-20, 0, 0), 0.5, 0.1, Vector3(100, -120, -120), Vector3(120, 120, 120));
 	whirlwind = new Whirlwind(0.5, 0.1, Vector3(-100, -100, -100), Vector3(100, 100, 100), 2, Vector3(0, 0, 0));
-	explosion = new Explosion(100, Vector3(0, 0, 0), 1000, 1);
+	explosion = new Explosion(100, Vector3(0, 0, 0), 1000, 2);
 }
 
 

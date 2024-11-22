@@ -19,7 +19,7 @@ void Explosion::apply_force(double t)
 			{
 				const Vector3 explosiveForce = (_K / pow(r(pos), 2)) * 
 												Vector3(pos.x - _center.x, pos.y - _center.y, pos.z - _center.z) * 
-												-pow(E, t / _t);
+												pow(E, -t / _t);
 
 				p->apply_force(explosiveForce);
 			}

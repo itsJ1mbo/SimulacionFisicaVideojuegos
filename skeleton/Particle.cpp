@@ -23,13 +23,11 @@ Particle::~Particle()
 
 void Particle::integrate(const double t)
 {
+	_acc = _force / _mass;
+
 	_vel = _vel * pow(_damp, t) + _acc * t;
 
-	_vel += _force;
-
 	_pos->p += _vel * t;
-
-	_vel -= _force;
 }
 
 void Particle::update(const double t)
