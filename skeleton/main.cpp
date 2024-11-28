@@ -160,6 +160,13 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		wind->register_system(ps);
 		break;
 	}
+	case 'M':
+	{
+		if (ps != nullptr) delete ps;
+		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'm');
+		gravity->register_system(ps);
+		break;
+	}
 	case 'B':
 	{
 		lighted = true;

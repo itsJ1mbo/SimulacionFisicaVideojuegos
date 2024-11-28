@@ -4,6 +4,9 @@
 #include <list>
 #include <random>
 
+class SpringForceGenerator;
+class AnchoredSpringFG;
+
 class Particle;
 
 class AliExpressParticleSystem
@@ -17,11 +20,16 @@ public:
 	std::list<Particle*> particles() const { return _particles; }
 
 private:
+	SpringForceGenerator* _spring1;
+	SpringForceGenerator* _spring2;
+	AnchoredSpringFG* _spring3;
+
 	char _tipo;
 	int _lifeTime;
 
 	physx::PxTransform* _tr;
 	std::list<Particle*> _particles;
+	std::vector<Particle*> _springParticles;
 
 	physx::PxVec3 _vel;
 	int _radius;
@@ -31,6 +39,7 @@ private:
 	std::mt19937 _gen{ _rd() };
 
 	void generate();
+	void generate_spring();
 	physx::PxVec3 vel_by_distribution();
 	void particle_properties();
 };

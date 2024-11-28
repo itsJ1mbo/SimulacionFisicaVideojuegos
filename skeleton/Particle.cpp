@@ -28,6 +28,8 @@ void Particle::integrate(const double t)
 	_vel = _vel * pow(_damp, t) + _acc * t;
 
 	_pos->p += _vel * t;
+
+	_force -= _prevForce;
 }
 
 void Particle::update(const double t)
