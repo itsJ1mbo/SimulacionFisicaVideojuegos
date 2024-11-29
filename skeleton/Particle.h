@@ -17,7 +17,7 @@ public:
 	Vector3 velocity() const { return _vel; }
 	Vector3 position() const { return _pos->p; }
 
-	void apply_force(const physx::PxVec3& f) { _prevForce = f; _force += f; }
+	void apply_force(const physx::PxVec3& f) { _force += f; }
 
 private:
 	void integrate(const double t);

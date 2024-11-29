@@ -6,10 +6,14 @@
 #include "Particle.h"
 
 AliExpressParticleSystem::AliExpressParticleSystem(const physx::PxVec3& pos, const char t) :
-	_tipo(t), _lifeTime(19), _radius(0), _color()
+	_spring1(nullptr), _spring2(nullptr), _spring3(nullptr), _tipo(t), _lifeTime(100), _radius(0), _color()
 {
 	_tr = new physx::PxTransform(pos);
-	if (_tipo == 'm') generate_spring();
+	if (_tipo == 'm')
+	{
+		generate_spring();
+		generate_anchored_spring();
+	}
 }
 
 AliExpressParticleSystem::~AliExpressParticleSystem()
@@ -18,12 +22,6 @@ AliExpressParticleSystem::~AliExpressParticleSystem()
 	_tr = nullptr;
 
 	for(auto p : _particles)
-	{
-		delete p;
-		p = nullptr;
-	}
-
-	for (auto p : _springParticles)
 	{
 		delete p;
 		p = nullptr;
@@ -41,22 +39,27 @@ void AliExpressParticleSystem::generate_spring()
 {
 	particle_properties();
 
-	Particle* particle1 = new Particle(_tr->p + Vector3(0, 10, 0), Vector3(0, 0, 0), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
+	Particle* particle1 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
 	Particle* particle2 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
 
-	_spring1 = new SpringForceGenerator(1, 10, particle2);
-	_spring2 = new SpringForceGenerator(1, 10, particle1);
+	_spring1 = new SpringForceGenerator(200, 10, particle2);
+	_spring2 = new SpringForceGenerator(30, 10, particle1);
 
-	_springParticles.push_back(particle1);
 	_particles.push_back(particle1);
-	_springParticles.push_back(particle2);
 	_particles.push_back(particle2);
 
+	_spring1->register_system(this);
+	_spring2->register_system(this);
+}
 
-	Particle* particle3 = new Particle(_tr->p + Vector3(20, -10, 0), Vector3(0, 0, 0), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
-	_spring3 = new AnchoredSpringFG(500, 10, Vector3(20, 10, 0));
-	_springParticles.push_back(particle3);
+void AliExpressParticleSystem::generate_anchored_spring()
+{
+	particle_properties();
+
+	Particle* particle3 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
+	_spring3 = new AnchoredSpringFG(1000, 10, Vector3(0, 10, 0));
 	_particles.push_back(particle3);
+	_spring3->register_system(this);
 }
 
 
@@ -100,7 +103,7 @@ void AliExpressParticleSystem::particle_properties()
 		_radius = 5;
 		_color = { 0.75, 0.75, 0.75, 1 };
 	}
-	else if (_tipo == 'm') 
+	else if (_tipo == 'm')
 	{
 		_radius = 5;
 		_color = { 0.75, 0.75, 0.75, 1 };
@@ -112,9 +115,9 @@ void AliExpressParticleSystem::update(double t)
 	if (_tipo != 'm') generate();
 	else if (_tipo == 'm')
 	{
-		_spring1->update_force(_springParticles[0]);
-		_spring2->update_force(_springParticles[1]);
-		_spring3->update_force(_springParticles[2]);
+		if (_spring1 != nullptr) _spring1->apply_force(t);
+		if (_spring2 != nullptr) _spring2->apply_force(t);
+		if (_spring3 != nullptr) _spring3->apply_force(t);
 	}
 
 	for (auto p = _particles.begin(); p != _particles.end();)

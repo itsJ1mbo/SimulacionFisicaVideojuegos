@@ -29,7 +29,6 @@ private:
 
 	physx::PxTransform* _tr;
 	std::list<Particle*> _particles;
-	std::vector<Particle*> _springParticles;
 
 	physx::PxVec3 _vel;
 	int _radius;
@@ -40,6 +39,7 @@ private:
 
 	void generate();
 	void generate_spring();
+	void generate_anchored_spring();
 	physx::PxVec3 vel_by_distribution();
 	void particle_properties();
 };

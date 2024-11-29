@@ -142,15 +142,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'f');
 		gravity->register_system(ps);
+		whirlwind->register_system(ps);
 		break;
 	}
 	case 'N':
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'n');
-		//whirlwind->register_system(ps);
 		explosion->register_system(ps);
-		//gravity->register_system(ps);
+		gravity->register_system(ps);
 		break;
 	}
 	case 'E':

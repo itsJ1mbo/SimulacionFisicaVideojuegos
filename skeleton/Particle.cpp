@@ -29,7 +29,7 @@ void Particle::integrate(const double t)
 
 	_pos->p += _vel * t;
 
-	_force -= _prevForce;
+	_force = Vector3(0, 0, 0);
 }
 
 void Particle::update(const double t)
