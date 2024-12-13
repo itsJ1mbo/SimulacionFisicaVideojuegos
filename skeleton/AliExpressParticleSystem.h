@@ -6,6 +6,7 @@
 
 class SpringForceGenerator;
 class AnchoredSpringFG;
+class BuoyancyForceGenerator;
 
 class Particle;
 
@@ -23,6 +24,7 @@ private:
 	SpringForceGenerator* _spring1;
 	SpringForceGenerator* _spring2;
 	AnchoredSpringFG* _spring3;
+	BuoyancyForceGenerator* _buoyancy;
 
 	char _tipo;
 	int _lifeTime;
@@ -39,6 +41,7 @@ private:
 
 	void generate();
 	void generate_spring();
+	void generate_buoyancy();
 	void generate_anchored_spring();
 	physx::PxVec3 vel_by_distribution();
 	void particle_properties();

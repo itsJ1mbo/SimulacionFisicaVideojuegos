@@ -169,6 +169,13 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 	case 'B':
 	{
+		if (ps != nullptr) delete ps;
+		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'b');
+		gravity->register_system(ps);
+		break;
+	}
+	case 'P':
+	{
 		lighted = true;
 	}
 	default:

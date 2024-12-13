@@ -1,13 +1,22 @@
 #include "Particle.h"
 #include <iostream>
 
-Particle::Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, int r, const physx::PxVec3& acc, double d, double m, physx::PxVec4 color) : 
+Particle::Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, const physx::PxVec3& acc, double d, double m, physx::PxVec4 color) :
 	_lifeTime(0), _vel(vel), _force(0, 0, 0), _acc(acc), _damp(d), _mass(m)
 {
 	_pos = new physx::PxTransform(pos);
 
-	const physx::PxSphereGeometry sphere(r);
-	physx::PxShape* shape = CreateShape(sphere);
+	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(5));
+
+	_ri = new RenderItem(shape, _pos, color);
+}
+
+Particle::Particle(const physx::PxVec3& pos, double d, double m, physx::PxVec4 color, double x, double y, double z) :
+	_lifeTime(0), _vel(Vector3()), _force(0, 0, 0), _acc(Vector3()), _damp(d), _mass(m)
+{
+	_pos = new physx::PxTransform(pos);
+
+	physx::PxShape* shape = CreateShape(physx::PxBoxGeometry(x, y, z));
 
 	_ri = new RenderItem(shape, _pos, color);
 }

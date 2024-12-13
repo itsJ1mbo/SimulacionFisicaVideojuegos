@@ -4,6 +4,7 @@
 
 #include "AnchoredSpringFG.h"
 #include "Particle.h"
+#include "BuoyancyForceGenerator.h"
 
 AliExpressParticleSystem::AliExpressParticleSystem(const physx::PxVec3& pos, const char t) :
 	_spring1(nullptr), _spring2(nullptr), _spring3(nullptr), _tipo(t), _lifeTime(100), _radius(0), _color()
@@ -13,6 +14,10 @@ AliExpressParticleSystem::AliExpressParticleSystem(const physx::PxVec3& pos, con
 	{
 		generate_spring();
 		generate_anchored_spring();
+	}
+	else if (_tipo == 'b')
+	{
+		generate_buoyancy();
 	}
 }
 
@@ -31,7 +36,7 @@ AliExpressParticleSystem::~AliExpressParticleSystem()
 void AliExpressParticleSystem::generate()
 {
 	particle_properties();
-	Particle* particle = new Particle(_tr->p, vel_by_distribution(), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
+	Particle* particle = new Particle(_tr->p, vel_by_distribution(), physx::PxVec3(0, 0, 0), 0.99, 1, _color);
 	_particles.push_back(particle);
 }
 
@@ -39,8 +44,8 @@ void AliExpressParticleSystem::generate_spring()
 {
 	particle_properties();
 
-	Particle* particle1 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
-	Particle* particle2 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
+	Particle* particle1 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.99, 1, _color);
+	Particle* particle2 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.99, 1, _color);
 
 	_spring1 = new SpringForceGenerator(200, 10, particle2);
 	_spring2 = new SpringForceGenerator(30, 10, particle1);
@@ -52,11 +57,20 @@ void AliExpressParticleSystem::generate_spring()
 	_spring2->register_system(this);
 }
 
+void AliExpressParticleSystem::generate_buoyancy()
+{
+	particle_properties();
+	Particle* particle = new Particle(_tr->p + Vector3(0, 10, 0), Vector3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.99, 1, _color);
+	_buoyancy = new BuoyancyForceGenerator(10, 100, 1000);
+	_particles.push_back(particle);
+	_buoyancy->register_system(this);
+}
+
 void AliExpressParticleSystem::generate_anchored_spring()
 {
 	particle_properties();
 
-	Particle* particle3 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), _radius, physx::PxVec3(0, 0, 0), 0.99, 1, _color);
+	Particle* particle3 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.99, 1, _color);
 	_spring3 = new AnchoredSpringFG(1000, 10, Vector3(0, 10, 0));
 	_particles.push_back(particle3);
 	_spring3->register_system(this);
@@ -108,16 +122,25 @@ void AliExpressParticleSystem::particle_properties()
 		_radius = 5;
 		_color = { 0.75, 0.75, 0.75, 1 };
 	}
+	else if (_tipo == 'b')
+	{
+		_radius = 5;
+		_color = { 0.75, 0.75, 0.75, 1 };
+	}
 }
 
 void AliExpressParticleSystem::update(double t)
 {
-	if (_tipo != 'm') generate();
+	if (_tipo != 'm' && _tipo != 'b') generate();
 	else if (_tipo == 'm')
 	{
-		if (_spring1 != nullptr) _spring1->apply_force(t);
-		if (_spring2 != nullptr) _spring2->apply_force(t);
-		if (_spring3 != nullptr) _spring3->apply_force(t);
+		if (_spring1 != nullptr) _spring1->update_force(_particles.front());
+		if (_spring2 != nullptr) _spring2->update_force(_particles.back());
+		if (_spring3 != nullptr) _spring3->update_force(_particles.back());
+	}
+	else if (_tipo == 'b')
+	{
+		if (_buoyancy != nullptr) _buoyancy->update_force(_particles.front());
 	}
 
 	for (auto p = _particles.begin(); p != _particles.end();)

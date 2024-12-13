@@ -255,6 +255,7 @@
   <ItemGroup>
     <ClCompile Include="AliExpressParticleSystem.cpp" />
     <ClCompile Include="AnchoredSpringFG.cpp" />
+    <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
@@ -272,6 +273,7 @@
   <ItemGroup>
     <ClInclude Include="AliExpressParticleSystem.h" />
     <ClInclude Include="AnchoredSpringFG.h" />
+    <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Explosion.h" />
