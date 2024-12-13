@@ -17,7 +17,7 @@ void Wind::apply_force(double t) const
 			{
 				const physx::PxVec3 diffVel = _windVel - p->velocity();
 				const double magnitude = diffVel.magnitude();
-				const physx::PxVec3 windForce = _k1 * diffVel + _k2 * magnitude * diffVel;
+				const physx::PxVec3 windForce = (_k1 * diffVel + _k2 * magnitude * diffVel) * magnitude;
 
 				p->apply_force(windForce);
 			}

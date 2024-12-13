@@ -31,6 +31,7 @@ private:
 
 	physx::PxTransform* _tr;
 	std::list<Particle*> _particles;
+	std::vector<Particle*> _springParticles;
 
 	physx::PxVec3 _vel;
 	int _radius;

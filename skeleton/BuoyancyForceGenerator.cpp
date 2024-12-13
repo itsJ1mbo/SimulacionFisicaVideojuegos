@@ -5,9 +5,15 @@ BuoyancyForceGenerator::BuoyancyForceGenerator(const float maxDepth, const float
 	_height(maxDepth),
 	_volume(volume),
 	_liquidDensity(liquidDensity),
-	_gravity(9.81f)
+	_gravity(1.0f)
 {
-	_particle = new Particle(Vector3(0, 0, 0), 0.99, 1, Vector4(0, 0, 1, 1), 100, 2, 100);
+	_particle = new Particle(Vector3(0, 0, 0), 0.99, 1, Vector4(0, 0, 1, 1), 20, 1, 20);
+}
+
+BuoyancyForceGenerator::~BuoyancyForceGenerator()
+{
+	delete _particle;
+	_particle = nullptr;
 }
 
 void BuoyancyForceGenerator::apply_force(double t) const

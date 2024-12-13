@@ -4,7 +4,7 @@ class BuoyancyForceGenerator : public ForceGenerator
 {
 public:
 	BuoyancyForceGenerator(float maxDepth, float volume, float liquidDensity);
-	~BuoyancyForceGenerator() override = default;
+	~BuoyancyForceGenerator() override;
 	void apply_force(double t) const override;
 
 	void update_force(Particle* particle) const;
