@@ -23,7 +23,7 @@ void SpringForceGenerator::update_force(Particle* particle) const
 	}
 }
 
-void SpringForceGenerator::apply_force(double t) const
+void SpringForceGenerator::apply_force_particle(double t) const
 {
 	/*for (const auto& ps : _ps)
 	{
@@ -32,4 +32,8 @@ void SpringForceGenerator::apply_force(double t) const
 			if (p != _other) update_force(p);
 		}
 	}*/
+}
+
+void SpringForceGenerator::apply_force_dynamics() const
+{
 }

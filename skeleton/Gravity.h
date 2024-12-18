@@ -1,13 +1,18 @@
 #pragma once
 #include "ForceGenerator.h"
+
+constexpr float G = 6.67430e-11f;
+
 class Gravity : public ForceGenerator
 {
 public:
-	Gravity();
+	Gravity(const float m, const Vector3& pos);
 
-	void apply_force(double t) const override;
+	void apply_force_particle(double t) const override;
+	void apply_force_dynamics() const override;
 
 private:
-	physx::PxVec3 _gravity;
+	float _mass;
+	Vector3 _pos;
 };
 

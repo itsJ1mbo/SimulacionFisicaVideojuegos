@@ -16,6 +16,8 @@
 #include "Wind.h"
 #include "Whirlwind.h"
 #include "Explosion.h"
+#include "DynamicRigidBody.h"
+#include "StellarSystem.h"
 
 std::string display_text = "This is a test";
 
@@ -37,18 +39,20 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-PxSphereGeometry* gSphere = NULL;
+PxShape* shape = nullptr;
 
-std::vector<Particle*> vParticles_;
-Particle* p = nullptr;
+//std::vector<Particle*> vParticles_;
+//Particle* p = nullptr;
 
-AliExpressParticleSystem* ps = nullptr;
-ForceGenerator* gravity = nullptr;
-ForceGenerator* wind = nullptr;
-ForceGenerator* whirlwind = nullptr;
-ForceGenerator* explosion = nullptr;
+//AliExpressParticleSystem* ps = nullptr;
+//ForceGenerator* gravity = nullptr;
+//ForceGenerator* wind = nullptr;
+//ForceGenerator* whirlwind = nullptr;
+//ForceGenerator* explosion = nullptr;
 
-bool lighted = false;
+//bool lighted = false;
+
+StellarSystem* ss = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -67,17 +71,19 @@ void initPhysics(bool interactive)
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
+	sceneDesc.gravity = PxVec3(0.0f, 0.0f, 0.0f);
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	gravity = new Gravity();
+	/*gravity = new Gravity();
 	wind = new Wind(Vector3(-20, 0, 0), 0.5, 0.1, Vector3(100, -120, -120), Vector3(120, 120, 120));
 	whirlwind = new Whirlwind(0.5, 0.1, Vector3(-100, -100, -100), Vector3(100, 100, 100), 2, Vector3(0, 0, 0));
-	explosion = new Explosion(100, Vector3(0, 0, 0), 1000, 2);
+	explosion = new Explosion(100, Vector3(0, 0, 0), 1000, 2);*/
+
+	ss = new StellarSystem(Vector3(0, 0, 0), gPhysics, gScene);
 }
 
 
@@ -87,24 +93,30 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-
-	gScene->simulate(t);
+	gScene->simulate(t + 0.1);
 	gScene->fetchResults(true);
 
-	gravity->apply_force(t);
-	wind->apply_force(t);
-	whirlwind->apply_force(t);
+	ss->update(t);
+
+# pragma region curso
+	/*;
+
+	gravity->apply_force_particle(t);
+	wind->apply_force_particle(t);
+	whirlwind->apply_force_particle(t);
 	if (lighted) {
-		explosion->apply_force(t);
+		explosion->apply_force_particle(t);
 		lighted = false;
 	}
-	if (ps != nullptr) ps->update(t);
+	if (ps != nullptr) ps->update(t);*/
 
 	//p->integrate(t);
 	/*for(const auto a : vParticles_)
 	{
 		a->integrate(t);
 	}*/
+
+#pragma endregion 
 }
 
 // Function to clean data
@@ -137,47 +149,47 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	case 'F':
+	/*case 'F':
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'f');
-		gravity->register_system(ps);
-		whirlwind->register_system(ps);
+		gravity->register_particle_system(ps);
+		whirlwind->register_particle_system(ps);
 		break;
 	}
 	case 'N':
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'n');
-		explosion->register_system(ps);
-		gravity->register_system(ps);
+		explosion->register_particle_system(ps);
+		gravity->register_particle_system(ps);
 		break;
 	}
 	case 'E':
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'e');
-		wind->register_system(ps);
+		wind->register_particle_system(ps);
 		break;
 	}
 	case 'M':
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'm');
-		gravity->register_system(ps);
+		gravity->register_particle_system(ps);
 		break;
 	}
 	case 'B':
 	{
 		if (ps != nullptr) delete ps;
 		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'b');
-		gravity->register_system(ps);
+		gravity->register_particle_system(ps);
 		break;
 	}
 	case 'P':
 	{
 		lighted = true;
-	}
+	}*/
 	default:
 		break;
 	}

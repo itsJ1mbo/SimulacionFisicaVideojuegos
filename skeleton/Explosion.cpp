@@ -8,7 +8,7 @@ Explosion::Explosion(double R, const physx::PxVec3& c, double K, double t) :
 
 }
 
-void Explosion::apply_force(double t) const
+void Explosion::apply_force_particle(double t) const
 {
 	for (const auto ps : _ps)
 	{

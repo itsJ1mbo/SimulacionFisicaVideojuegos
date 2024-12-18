@@ -16,7 +16,11 @@ BuoyancyForceGenerator::~BuoyancyForceGenerator()
 	_particle = nullptr;
 }
 
-void BuoyancyForceGenerator::apply_force(double t) const
+void BuoyancyForceGenerator::apply_force_particle(double t) const
+{
+}
+
+void BuoyancyForceGenerator::apply_force_dynamics() const
 {
 }
 

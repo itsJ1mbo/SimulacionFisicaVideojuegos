@@ -7,7 +7,7 @@ Whirlwind::Whirlwind(double k1, double k2, const physx::PxVec3& min, const physx
 
 }
 
-void Whirlwind::apply_force(double t) const
+void Whirlwind::apply_force_particle(double t) const
 {
 	for (const auto ps : _ps)
 	{

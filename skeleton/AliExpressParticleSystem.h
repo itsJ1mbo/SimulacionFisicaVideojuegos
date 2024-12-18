@@ -13,7 +13,7 @@ class Particle;
 class AliExpressParticleSystem
 {
 public:
-	AliExpressParticleSystem(const physx::PxVec3& pos, const char t = 'e');
+	AliExpressParticleSystem(const physx::PxVec3& pos, const char t, int time);
 	~AliExpressParticleSystem();
 
 	void update(double t);
@@ -34,7 +34,7 @@ private:
 	std::vector<Particle*> _springParticles;
 
 	physx::PxVec3 _vel;
-	int _radius;
+	float _radius;
 	physx::PxVec4 _color;
 
 	std::random_device _rd{};

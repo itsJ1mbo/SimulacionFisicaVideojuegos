@@ -7,7 +7,7 @@ Wind::Wind(const physx::PxVec3& vel, double k1, double k2, const physx::PxVec3& 
 	
 }
 
-void Wind::apply_force(double t) const
+void Wind::apply_force_particle(double t) const
 {
 	for (const auto ps : _ps)
 	{

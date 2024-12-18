@@ -6,7 +6,7 @@
 class Particle
 {
 public:
-	Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, const physx::PxVec3& acc, double d, double m, physx::PxVec4 color, int r);
+	Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, const physx::PxVec3& acc, double d, double m, const physx::PxVec4& color, float r);
 	Particle(const physx::PxVec3& pos, double d, double m, physx::PxVec4 color, double x, double y, double z);
 	~Particle();
 

@@ -6,7 +6,7 @@ class Explosion : public ForceGenerator
 public:
 	Explosion(double R, const physx::PxVec3& c, double K, double t);
 
-	void apply_force(double t) const override;
+	void apply_force_particle(double t) const override;
 
 private:
 	double r(const physx::PxVec3& pos) const;

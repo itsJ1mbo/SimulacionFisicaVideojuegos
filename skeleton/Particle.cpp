@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include <iostream>
 
-Particle::Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, const physx::PxVec3& acc, double d, double m, physx::PxVec4 color, int r) :
+Particle::Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, const physx::PxVec3& acc, double d, double m, const physx::PxVec4& color, const float r) :
 	_lifeTime(0), _vel(vel), _force(0, 0, 0), _acc(acc), _damp(d), _mass(m)
 {
 	_pos = new physx::PxTransform(pos);
