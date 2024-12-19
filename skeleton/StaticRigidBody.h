@@ -11,6 +11,7 @@ public:
 	~StaticRigidBody();
 
 	Vector3 position() const { return _actor->getGlobalPose().p; }
+
 private:
 	physx::PxRigidStatic* _actor;
 	physx::PxTransform* _tr;

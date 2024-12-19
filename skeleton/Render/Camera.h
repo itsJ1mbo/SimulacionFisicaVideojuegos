@@ -31,6 +31,7 @@
 #ifndef PHYSX_SNIPPET_CAMERA_H
 #define PHYSX_SNIPPET_CAMERA_H
 
+#include "../core.hpp"
 #include "foundation/PxTransform.h"
 
 namespace Snippets
@@ -48,6 +49,10 @@ public:
 	physx::PxVec3		getEye()	const;
 	physx::PxVec3		getDir()	const;
 	physx::PxTransform	getTransform() const;
+
+	void set_eye(const physx::PxVec3& pos) { mEye = pos; }
+	void set_dir(const physx::PxVec3& dir) { mDir = dir.getNormalized(); }
+
 private:
 	physx::PxVec3	mEye;
 	physx::PxVec3	mDir;

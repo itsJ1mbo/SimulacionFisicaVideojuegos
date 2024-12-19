@@ -35,13 +35,13 @@ public:
 	std::list<DynamicRigidBody*> dynamics() const { return _dynamics; }
 	std::list<StaticRigidBody*> statics() const { return _statics; }
 
+	virtual void generate() = 0;
+
 protected:
 	std::list<DynamicRigidBody*> _dynamics;
 	std::list<StaticRigidBody*> _statics;
 	physx::PxTransform* _tr;
 	physx::PxPhysics* _physics;
 	physx::PxScene* _scene;
-
-	virtual void generate() = 0;
 };
 

@@ -262,11 +262,13 @@
     <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="PlayerSystem.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="DynamicRigidBody.cpp" />
     <ClCompile Include="RigidBodySystem.cpp" />
+    <ClCompile Include="RocketForce.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="StaticRigidBody.cpp" />
     <ClCompile Include="StellarSystem.cpp" />
@@ -284,11 +286,13 @@
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="Gravity.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="PlayerSystem.h" />
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="DynamicRigidBody.h" />
     <ClInclude Include="RigidBodySystem.h" />
+    <ClInclude Include="RocketForce.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="StaticRigidBody.h" />
     <ClInclude Include="StellarSystem.h" />

@@ -25,6 +25,8 @@
     <ClCompile Include="RigidBodySystem.cpp" />
     <ClCompile Include="StellarSystem.cpp" />
     <ClCompile Include="StaticRigidBody.cpp" />
+    <ClCompile Include="RocketForce.cpp" />
+    <ClCompile Include="PlayerSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -51,6 +53,8 @@
     <ClInclude Include="RigidBodySystem.h" />
     <ClInclude Include="StellarSystem.h" />
     <ClInclude Include="StaticRigidBody.h" />
+    <ClInclude Include="RocketForce.h" />
+    <ClInclude Include="PlayerSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

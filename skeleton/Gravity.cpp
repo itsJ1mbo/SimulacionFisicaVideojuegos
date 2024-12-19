@@ -4,8 +4,8 @@
 
 #include "Particle.h"
 
-Gravity::Gravity(const float m, const Vector3& pos) :
-	_mass(m), _pos(pos)
+Gravity::Gravity(const float m, const Vector3& pos, DynamicRigidBody* origin, const float r) :
+	_mass(m), _pos(pos), _extraR(r), _origin(origin)
 {
 }
 
@@ -27,12 +27,21 @@ void Gravity::apply_force_dynamics() const
 	{
 		for (const auto& rb : rbs->dynamics())
 		{
-			Vector3 r = rb->position() - _pos;
-			Vector3 gravity = G * _mass / std::pow(r.magnitude(), 2) * r.getNormalized();
-			const physx::PxVec3 gravityForce = gravity * rb->mass();
-			rb->add_force(-gravityForce);
+			if (_origin != rb)
+			{
+				Vector3 pos = rb->position();
+				Vector3 oPos = _pos;
+				if (_origin != nullptr) oPos = _origin->position();
 
-			std::cout << "GRAV: " << gravityForce.x << " " << gravityForce.y << " " << gravityForce.z << std::endl;
+				Vector3 r = pos - oPos;
+				float mag = r.magnitude();
+
+				Vector3 gravity = G * _mass / std::pow(mag, 2) * r.getNormalized();
+				physx::PxVec3 gravityForce = gravity * rb->mass();
+
+				if (mag < _extraR) gravityForce = Vector3(gravityForce.x * 1000, gravityForce.y * 1000, gravityForce.z * 1000);
+				rb->add_force(-gravityForce);
+			}
 		}
 	}
 }

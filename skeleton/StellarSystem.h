@@ -10,7 +10,8 @@ class RenderItem;
 struct Star
 {
 	StaticRigidBody* rb;
-	float mass;
+	double mass;
+	float radius;
 
 	AliExpressParticleSystem* ps;
 };
@@ -18,19 +19,21 @@ struct Star
 class StellarSystem : public RigidBodySystem
 {
 public:
-	StellarSystem(const Vector3& pos, physx::PxPhysics* p, physx::PxScene* scene);
+	StellarSystem(const Vector3& pos, physx::PxPhysics* p, physx::PxScene* scene, DynamicRigidBody* player);
 	~StellarSystem() override;
 
 	void update(double t) override;
+	void generate() override;
 
 private:
 	Star _star;
 	Gravity* _systemGravity;
 	std::list<Gravity*> _planetGravities;
 
+	DynamicRigidBody* _player;
+
 	void set_gravities();
 	void create_star();
-	void create_planet(const Vector3& dis, const float r, const float m);
-	void generate() override;
+	void create_planet(const Vector3& dis, const float r, const double m, const Vector4& color);
 };
 

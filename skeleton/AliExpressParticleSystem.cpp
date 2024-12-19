@@ -6,6 +6,8 @@
 #include "Particle.h"
 #include "BuoyancyForceGenerator.h"
 
+# define M_PI 3.14159265358979323846
+
 AliExpressParticleSystem::AliExpressParticleSystem(const physx::PxVec3& pos, const char t, int time) :
 	_spring1(nullptr), _spring2(nullptr), _spring3(nullptr), _buoyancy(nullptr), _tipo(t), _lifeTime(time), _radius(0), _color()
 {
@@ -88,6 +90,54 @@ void AliExpressParticleSystem::generate_anchored_spring()
 	_particles.push_back(particle3);
 	_springParticles.push_back(particle3);
 	_spring3->register_particle_system(this);
+}
+
+void AliExpressParticleSystem::sun_particles_system(const double t, const float r)
+{
+	_radius = 20;
+	_color = { 1, 0.6f , 0, 1 };
+
+	for (int i = 0; i < 10; ++i) 
+	{
+		std::uniform_real_distribution<float> thetaDist(0.0, 2.0 * M_PI); 
+		std::uniform_real_distribution<float> phiDist(-M_PI / 2.0, M_PI / 2.0);
+
+		float theta = thetaDist(_gen);
+		float phi = phiDist(_gen);
+		float distance = r - 350;
+
+		float xPos = distance * cos(phi) * cos(theta);
+		float yPos = distance * cos(phi) * sin(theta);
+		float zPos = distance * sin(phi);
+
+		physx::PxVec3 position(_tr->p.x + xPos, _tr->p.y + yPos, _tr->p.z + zPos);
+
+		std::uniform_real_distribution<float> x(-40, 40);
+		std::uniform_real_distribution<float> y(-40, 40);
+		std::uniform_real_distribution<float> z(-40, 40);
+
+		_vel = physx::PxVec3(x(_gen), y(_gen), z(_gen));
+
+		Particle* particle = new Particle(position, _vel, physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
+		_particles.push_back(particle);
+	}
+
+	for (auto p = _particles.begin(); p != _particles.end();)
+	{
+		(*p)->update(t);
+
+		if ((*p)->time_alive() >= _lifeTime || !check_in_sphere(*p, r))
+		{
+			delete* p;
+			p = _particles.erase(p);
+		}
+		else ++p;
+	}
+}
+
+bool AliExpressParticleSystem::check_in_sphere(const Particle* p, const float r) const
+{
+	return (p->position() - _tr->p).magnitude() < r;
 }
 
 

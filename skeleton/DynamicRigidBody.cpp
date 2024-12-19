@@ -5,8 +5,9 @@
 #include "RenderUtils.hpp"
 
 DynamicRigidBody::DynamicRigidBody(physx::PxScene* scene, physx::PxPhysics* physics, 
-	const Vector3& pos, const physx::PxGeometry& geometry, const Vector4& color, 
-	const float d) :
+	const Vector3& pos, 
+	const physx::PxGeometry& geometry, const physx::PxMaterial* mat, const Vector4& color, 
+	const double d, const double m) :
 		_actor(nullptr),
 		_tr(new physx::PxTransform(pos)),
 		_ri(nullptr)
@@ -14,13 +15,12 @@ DynamicRigidBody::DynamicRigidBody(physx::PxScene* scene, physx::PxPhysics* phys
 	_actor = physics->createRigidDynamic(*_tr);
 	_actor->setLinearVelocity(Vector3(0, 0, 0));
 	_actor->setAngularVelocity(Vector3(0, 0, 0));
-	physx::PxShape* shape = CreateShape(geometry);
-	_actor->attachShape(*shape);
-	physx::PxRigidBodyExt::updateMassAndInertia(*_actor, d);
-
+	_shape = CreateShape(geometry, mat);
+	_actor->attachShape(*_shape);
+	physx::PxRigidBodyExt::updateMassAndInertia(*_actor, physx::PxReal(d));
+	_actor->setMass(m);
 	scene->addActor(*_actor);
-
-	_ri = new RenderItem(shape, _actor, color);
+	_ri = new RenderItem(_shape, _actor, color);
 }
 
 DynamicRigidBody::~DynamicRigidBody()

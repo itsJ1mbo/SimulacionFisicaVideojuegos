@@ -18,6 +18,9 @@ public:
 
 	void update(double t);
 
+
+	void sun_particles_system(const double t, const float r);
+
 	std::list<Particle*> particles() const { return _particles; }
 
 private:
@@ -44,6 +47,11 @@ private:
 	void generate_spring();
 	void generate_buoyancy();
 	void generate_anchored_spring();
+
+
+	bool check_in_sphere(const Particle* p, const float r) const;
+
+
 	physx::PxVec3 vel_by_distribution();
 	void particle_properties();
 };

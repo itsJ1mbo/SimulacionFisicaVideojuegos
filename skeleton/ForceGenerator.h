@@ -6,8 +6,8 @@
 class ForceGenerator
 {
 public:
-	virtual ~ForceGenerator() = default;
 	ForceGenerator() = default;
+	virtual ~ForceGenerator() = default;
 
 	virtual void apply_force_particle(double t) const = 0;
 	void register_particle_system(AliExpressParticleSystem* ps) { _ps.push_back(ps); }
