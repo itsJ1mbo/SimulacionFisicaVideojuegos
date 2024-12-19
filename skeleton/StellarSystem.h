@@ -56,5 +56,6 @@ private:
 	void set_gravities();
 	void create_star();
 	DynamicRigidBody* create_planet(const float a, const float b, const float r, const double m, const Vector4& color);
+	void create_satelite(const float a, const float b, const float r, const double m, const Vector4& color, DynamicRigidBody* rb);
 };
 

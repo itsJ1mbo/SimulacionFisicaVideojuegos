@@ -254,7 +254,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AliExpressParticleSystem.cpp" />
-    <ClCompile Include="AnchoredSpringFG.cpp" />
     <ClCompile Include="AsteroidBeltSystem.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="callbacks.cpp" />
@@ -270,16 +269,13 @@
     <ClCompile Include="DynamicRigidBody.cpp" />
     <ClCompile Include="RigidBodySystem.cpp" />
     <ClCompile Include="RocketForce.cpp" />
-    <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="StaticRigidBody.cpp" />
     <ClCompile Include="StellarSystem.cpp" />
     <ClCompile Include="Vector3D.cpp" />
-    <ClCompile Include="Whirlwind.cpp" />
     <ClCompile Include="Wind.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AliExpressParticleSystem.h" />
-    <ClInclude Include="AnchoredSpringFG.h" />
     <ClInclude Include="AsteroidBeltSystem.h" />
     <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="callbacks.hpp" />
@@ -295,11 +291,9 @@
     <ClInclude Include="DynamicRigidBody.h" />
     <ClInclude Include="RigidBodySystem.h" />
     <ClInclude Include="RocketForce.h" />
-    <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="StaticRigidBody.h" />
     <ClInclude Include="StellarSystem.h" />
     <ClInclude Include="Vector3D.h" />
-    <ClInclude Include="Whirlwind.h" />
     <ClInclude Include="Wind.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

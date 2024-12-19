@@ -17,9 +17,6 @@
     <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="Wind.cpp" />
     <ClCompile Include="Explosion.cpp" />
-    <ClCompile Include="Whirlwind.cpp" />
-    <ClCompile Include="SpringForceGenerator.cpp" />
-    <ClCompile Include="AnchoredSpringFG.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="DynamicRigidBody.cpp" />
     <ClCompile Include="RigidBodySystem.cpp" />
@@ -46,9 +43,6 @@
     <ClInclude Include="Gravity.h" />
     <ClInclude Include="Wind.h" />
     <ClInclude Include="Explosion.h" />
-    <ClInclude Include="Whirlwind.h" />
-    <ClInclude Include="SpringForceGenerator.h" />
-    <ClInclude Include="AnchoredSpringFG.h" />
     <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="DynamicRigidBody.h" />
     <ClInclude Include="RigidBodySystem.h" />
