@@ -1,11 +1,11 @@
 #include "Whirlwind.h"
 #include  "Particle.h"
 
-Whirlwind::Whirlwind(double k1, double k2, const physx::PxVec3& min, const physx::PxVec3& max, double K, const physx::PxVec3& pos) :
-	Wind(Vector3(0, 0, 0), k1, k2, min, max), _K(K), _pos(pos)
-{
-
-}
+//Whirlwind::Whirlwind(double k1, double k2, const physx::PxVec3& min, const physx::PxVec3& max, double K, const physx::PxVec3& pos) :
+//	Wind(Vector3(0, 0, 0), k1, k2, min, max), _K(K), _pos(pos)
+//{
+//
+//}
 
 void Whirlwind::apply_force_particle(double t) const
 {

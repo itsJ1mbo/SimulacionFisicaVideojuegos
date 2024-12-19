@@ -288,7 +288,7 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 
 	// Display text
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	drawText("INNER WILDS", 0, glutGet(GLUT_WINDOW_HEIGHT) / 2, 2.3f);
+	drawText(title, 0, glutGet(GLUT_WINDOW_HEIGHT) / 2, 2.3f);
 	drawText(display_text, glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 3, 0.2f);
 
 	// Setup camera
@@ -389,7 +389,7 @@ void drawText(const std::string& text, float x, float y, float scale)
 	double* matrix = new double[16];
 	glGetDoublev(GL_PROJECTION_MATRIX, matrix);
 	glLoadIdentity();
-	glOrtho(0, 1920, 0, 1080, -1, 1);
+	glOrtho(0, 1920, 0, 1080, -0.1, 0.1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 

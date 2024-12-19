@@ -11,9 +11,6 @@ PlayerSystem::PlayerSystem(const Vector3& pos, physx::PxPhysics* p, physx::PxSce
 	_camVector(0, 2, 0),
 	_time(0)
 {
-	GetCamera()->set_eye(pos + Vector3(0, 120, 50));
-	GetCamera()->set_dir(Vector3(0, 0, -1));
-
 	_rocket = new RocketForce(GetCamera()->getDir(), 200);
 	_rocket->register_rb_system(this);
 }
@@ -49,7 +46,6 @@ void PlayerSystem::update(double t)
 	}
 
 	GetCamera()->set_eye(dynamics().back()->position() + _camVector);
-	std::cout << "POS: " << _dynamics.front()->position().x << " " << _dynamics.front()->position().y << " " << _dynamics.front()->position().z << std::endl;
 }
 
 void PlayerSystem::generate()
@@ -58,7 +54,7 @@ void PlayerSystem::generate()
 		((4.0 / 3.0) * physx::PxPi * std::pow(1, 3));
 
 	physx::PxMaterial* mat = _physics->createMaterial(0.5, 0.5, 0.0);
-	DynamicRigidBody* player = new DynamicRigidBody(_scene, _physics, _tr->p, physx::PxCapsuleGeometry(1, 2), mat, Vector4(1, 1, 1, 1), 950, 60);
+	DynamicRigidBody* player = new DynamicRigidBody(_scene, _physics, _tr->p, physx::PxSphereGeometry(0.5f), mat, Vector4(1, 1, 1, 1), 950, 60);
 
 	_dynamics.push_back(player);
 }

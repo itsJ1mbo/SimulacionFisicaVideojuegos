@@ -18,6 +18,7 @@
 #include "StellarSystem.h"
 
 std::string display_text = "PRESS ANY KEY TO START";
+std::string title = "INNER WILDS";
 
 #define M_PI 3.14159265358979323846
 
@@ -85,8 +86,8 @@ void initPhysics(bool interactive)
 	wind = new Wind(Vector3(-20, 0, 0), 0.5, 0.1, Vector3(100, -120, -120), Vector3(120, 120, 120));
 	whirlwind = new Whirlwind(0.5, 0.1, Vector3(-100, -100, -100), Vector3(100, 100, 100), 2, Vector3(0, 0, 0));
 	explosion = new Explosion(100, Vector3(0, 0, 0), 1000, 2);*/
-
-	ps = new PlayerSystem(Vector3(6000, 300, 0), gPhysics, gScene);
+	Vector3(4500, 0, 1);
+	ps = new PlayerSystem(Vector3(5000, 0, 1), gPhysics, gScene);
 	ps->generate();
 
 	ss = new StellarSystem(Vector3(0, 0, 0), gPhysics, gScene, nullptr);
@@ -159,22 +160,22 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	if (intro)
 	{
-		GetCamera()->set_eye(Vector3(6000, 120, 50));
-		GetCamera()->set_dir(Vector3(1, 0, 0));
 		ss->set_player(ps->player());
+		GetCamera()->set_dir(Vector3(-1, 0, 0));
 		glutPassiveMotionFunc(passiveMotionCallback);
 		scaler = 1;
+		title = display_text = "";
 		intro = false;
 	}
 
 	switch(toupper(key))
 	{
-	case 'O':
+	case 'W':
 	{
 		ps->move(1);
 		break;
 	}
-	case 'L':
+	case 'S':
 	{
 		ps->move(-1);
 		break;

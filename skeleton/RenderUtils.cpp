@@ -147,6 +147,7 @@ void renderLoop()
 	setupDefaultRenderState();
 
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+	//glClearColor(1, 1, 1, 1.0f);
 
 	glutSetCursor(GLUT_CURSOR_NONE);
 

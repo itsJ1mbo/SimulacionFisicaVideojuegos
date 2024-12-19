@@ -47,6 +47,7 @@
 #endif
 #include <string>
 
+extern std::string title;
 extern std::string display_text;
 
 namespace Snippets

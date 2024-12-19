@@ -18,6 +18,7 @@ public:
 	physx::PxVec3 position() const { return _actor->getGlobalPose().p; }
 	float mass() const { return _actor->getMass(); }
 	Vector3 velocity() const { return _actor->getLinearVelocity(); }
+	Vector3 ang_velocity() const { return _actor->getAngularVelocity(); }
 	physx::PxGeometryHolder geometry() const { return _shape->getGeometry(); }
 
 	void set_linear_velocity(const Vector3& vel) const { _actor->setLinearVelocity(vel); }

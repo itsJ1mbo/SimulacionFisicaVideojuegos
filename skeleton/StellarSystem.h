@@ -3,6 +3,8 @@
 
 #include "RigidBodySystem.h"
 
+class Wind;
+class AsteroidBeltSystem;
 class Explosion;
 class BuoyancyForceGenerator;
 class AliExpressParticleSystem;
@@ -41,13 +43,18 @@ private:
 	Gravity* _systemGravity;
 	std::list<Gravity*> _planetGravities;
 	BuoyancyForceGenerator* _buoyancy;
+	Wind* _wind;
 
 	DynamicRigidBody* _water;
 	physx::PxTransform* _waterTr;
 	DynamicRigidBody* _player;
+	AliExpressParticleSystem* _windPs;
+	DynamicRigidBody* _windPlanet;
+
+	AsteroidBeltSystem* _asteroidBelt;
 
 	void set_gravities();
 	void create_star();
-	DynamicRigidBody* create_planet(const Vector3& dis, const float r, const double m, const Vector4& color);
+	DynamicRigidBody* create_planet(const float a, const float b, const float r, const double m, const Vector4& color);
 };
 
