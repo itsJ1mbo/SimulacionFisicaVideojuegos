@@ -14,7 +14,7 @@ public:
 	inline void set_k(const double k) { _k = k; }
 
 	virtual void apply_force_particle(double t) const override;
-	virtual void apply_force_dynamics() const override;
+	virtual void apply_force_dynamics(double t) const override;
 
 protected:
 	double _k;

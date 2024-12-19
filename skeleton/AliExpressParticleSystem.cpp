@@ -1,26 +1,13 @@
 #include "AliExpressParticleSystem.h"
-#include "SpringForceGenerator.h"
 #include <iostream>
 
-#include "AnchoredSpringFG.h"
 #include "Particle.h"
-#include "BuoyancyForceGenerator.h"
+#include "Explosion.h"
 
-# define M_PI 3.14159265358979323846
-
-AliExpressParticleSystem::AliExpressParticleSystem(const physx::PxVec3& pos, const char t, int time) :
-	_spring1(nullptr), _spring2(nullptr), _spring3(nullptr), _buoyancy(nullptr), _tipo(t), _lifeTime(time), _radius(0), _color()
+AliExpressParticleSystem::AliExpressParticleSystem(const physx::PxVec3& pos, int time) :
+	_lifeTime(time), _radius(0), _color(), _time(0), _total(0)
 {
 	_tr = new physx::PxTransform(pos);
-	if (_tipo == 'm')
-	{
-		generate_spring();
-		generate_anchored_spring();
-	}
-	else if (_tipo == 'b')
-	{
-		generate_buoyancy();
-	}
 }
 
 AliExpressParticleSystem::~AliExpressParticleSystem()
@@ -33,63 +20,86 @@ AliExpressParticleSystem::~AliExpressParticleSystem()
 		delete p;
 		p = nullptr;
 	}
+}
 
-	if (_spring1 != nullptr) 
+Vector3 AliExpressParticleSystem::pos_in_sphere(const float r)
+{
+	std::uniform_real_distribution<float> thetaDist(0.0, physx::PxTwoPi);
+	std::uniform_real_distribution<float> phiDist(-physx::PxHalfPi, physx::PxHalfPi);
+
+	float theta = thetaDist(_gen);
+	float phi = phiDist(_gen);
+	float distance = r - 350;
+
+	float xPos = distance * cos(phi) * cos(theta);
+	float yPos = distance * cos(phi) * sin(theta);
+	float zPos = distance * sin(phi);
+
+	return {_tr->p.x + xPos, _tr->p.y + yPos, _tr->p.z + zPos};
+}
+
+void AliExpressParticleSystem::sun_explosions_particles(const float r, double t)
+{
+	bool exploded = false;
+	Vector3 pos;
+
+	if (_time >= _total)
 	{
-		delete _spring1;
-		delete _spring2;
-		delete _spring3;
+		exploded = true;
+		_radius = 30;
+		_color = { 1, 0.3f , 0, 1 };
+
+		pos = pos_in_sphere(r);
+
+		for (int i = 0; i < 20; ++i)
+		{
+			float theta = std::uniform_real_distribution<float>(0.0f, physx::PxTwoPi)(_gen);
+			float phi = std::acos(std::uniform_real_distribution<float>(-1.0f, 0.0f)(_gen));
+
+			float x = std::sin(phi) * std::cos(theta);
+			float y = std::sin(phi) * std::sin(theta);
+			float z = std::cos(phi);
+
+			physx::PxVec3 direction = physx::PxVec3(x, y, z);
+
+			std::uniform_real_distribution<float> speedDist(50.0f, 100.0f);
+			float speed = speedDist(_gen);
+
+			_vel = direction * speed;
+
+			Particle* particle = new Particle(pos, _vel, physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
+			_particles.push_back(particle);
+		}
+
+		std::uniform_real_distribution<> time(1, 2);
+		_total = time(_gen);
+		_time = 0;
+
+		Explosion* e = new Explosion(100, pos, 1000, 2);
+		e->register_particle_system(this);
+
 	}
-	else if (_buoyancy != nullptr) 
+
+	for (auto p = _particles.begin(); p != _particles.end();)
 	{
-		delete _buoyancy;
+		(*p)->update(t);
+
+		if ((*p)->time_alive() >= _lifeTime && _lifeTime || !check_in_sphere(*p, r))
+		{
+			delete* p;
+			p = _particles.erase(p);
+		}
+		else ++p;
 	}
-}
 
-void AliExpressParticleSystem::generate()
-{
-	particle_properties();
-	Particle* particle = new Particle(_tr->p, vel_by_distribution(), physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
-	_particles.push_back(particle);
-}
+	if (exploded)
+	{
+		Explosion* e = new Explosion(100, pos, 1000, 2);
+		e->register_particle_system(this);
+		e->apply_force_particle(t);
+	}
 
-void AliExpressParticleSystem::generate_spring()
-{
-	particle_properties();
-
-	Particle* particle1 = new Particle(_tr->p + Vector3(0, -10, 0), Vector3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
-	Particle* particle2 = new Particle(_tr->p + Vector3(0, 10, 0), Vector3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
-
-	_spring1 = new SpringForceGenerator(200, 10, particle2);
-	_spring2 = new SpringForceGenerator(30, 10, particle1);
-
-	_particles.push_back(particle1);
-	_springParticles.push_back(particle1);
-	_particles.push_back(particle2);
-	_springParticles.push_back(particle2);
-
-	_spring1->register_particle_system(this);
-	_spring2->register_particle_system(this);
-}
-
-void AliExpressParticleSystem::generate_buoyancy()
-{
-	particle_properties();
-	Particle* particle = new Particle(_tr->p + Vector3(0, 10, 0), Vector3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
-	_buoyancy = new BuoyancyForceGenerator(2, 1, 1000);
-	_particles.push_back(particle);
-	_buoyancy->register_particle_system(this);
-}
-
-void AliExpressParticleSystem::generate_anchored_spring()
-{
-	particle_properties();
-
-	Particle* particle3 = new Particle(_tr->p + Vector3(20, -10, 0), Vector3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
-	_spring3 = new AnchoredSpringFG(10, 10, Vector3(20, 10, 0));
-	_particles.push_back(particle3);
-	_springParticles.push_back(particle3);
-	_spring3->register_particle_system(this);
+	_time += t;
 }
 
 void AliExpressParticleSystem::sun_particles_system(const double t, const float r)
@@ -99,26 +109,14 @@ void AliExpressParticleSystem::sun_particles_system(const double t, const float 
 
 	for (int i = 0; i < 10; ++i) 
 	{
-		std::uniform_real_distribution<float> thetaDist(0.0, 2.0 * M_PI); 
-		std::uniform_real_distribution<float> phiDist(-M_PI / 2.0, M_PI / 2.0);
-
-		float theta = thetaDist(_gen);
-		float phi = phiDist(_gen);
-		float distance = r - 350;
-
-		float xPos = distance * cos(phi) * cos(theta);
-		float yPos = distance * cos(phi) * sin(theta);
-		float zPos = distance * sin(phi);
-
-		physx::PxVec3 position(_tr->p.x + xPos, _tr->p.y + yPos, _tr->p.z + zPos);
-
 		std::uniform_real_distribution<float> x(-40, 40);
 		std::uniform_real_distribution<float> y(-40, 40);
 		std::uniform_real_distribution<float> z(-40, 40);
+		std::uniform_real_distribution<float> speedDist(50.0f, 100.0f);
 
-		_vel = physx::PxVec3(x(_gen), y(_gen), z(_gen));
+		_vel = physx::PxVec3(x(_gen), y(_gen), z(_gen)).getNormalized() * speedDist(_gen);
 
-		Particle* particle = new Particle(position, _vel, physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
+		Particle* particle = new Particle(pos_in_sphere(r), _vel, physx::PxVec3(0, 0, 0), 0.99, 1, _color, _radius);
 		_particles.push_back(particle);
 	}
 
@@ -126,7 +124,7 @@ void AliExpressParticleSystem::sun_particles_system(const double t, const float 
 	{
 		(*p)->update(t);
 
-		if ((*p)->time_alive() >= _lifeTime || !check_in_sphere(*p, r))
+		if ((*p)->time_alive() >= _lifeTime && _lifeTime || !check_in_sphere(*p, r))
 		{
 			delete* p;
 			p = _particles.erase(p);
@@ -143,7 +141,7 @@ bool AliExpressParticleSystem::check_in_sphere(const Particle* p, const float r)
 
 physx::PxVec3 AliExpressParticleSystem::vel_by_distribution()
 {
-	if (_tipo == 'e') {
+	/*if (_tipo == 'e') {
 		std::normal_distribution<float> x(50, 1);
 		std::normal_distribution<float> y(10, 1);
 		std::normal_distribution<float> z(10, 1);
@@ -164,12 +162,12 @@ physx::PxVec3 AliExpressParticleSystem::vel_by_distribution()
 
 		return physx::PxVec3(x(_gen), y(_gen), z(_gen));
 	}
-	else return {};
+	else return {};*/
 }
 
 void AliExpressParticleSystem::particle_properties()
 {
-	if (_tipo == 'e') {
+	/*if (_tipo == 'e') {
 		_radius = 5;
 		_color = { 0.75, 0.75, 0.75, 1 };
 	}
@@ -190,32 +188,32 @@ void AliExpressParticleSystem::particle_properties()
 	{
 		_radius = 5;
 		_color = { 0.75, 0.75, 0.75, 1 };
-	}
+	}*/
 }
 
 void AliExpressParticleSystem::update(double t)
 {
-	if (_tipo != 'm' && _tipo != 'b')
-	{
-		for (int i = 0; i < 10; ++i)
-			generate();
-	}
-	else if (_tipo == 'm')
-	{
-		if (_spring1 != nullptr) _spring1->update_force(_springParticles[0]);
-		if (_spring2 != nullptr) _spring2->update_force(_springParticles[1]);
-		if (_spring3 != nullptr) _spring3->update_force(_springParticles[2]);
-	}
-	else if (_tipo == 'b')
-	{
-		if (_buoyancy != nullptr) _buoyancy->update_force(_particles.front());
-	}
+	//if (_tipo != 'm' && _tipo != 'b')
+	//{
+	//	//for (int i = 0; i < 10; ++i)
+	//	//	//generate();
+	//}
+	//else if (_tipo == 'm')
+	//{
+	//	if (_spring1 != nullptr) _spring1->update_force(_springParticles[0]);
+	//	if (_spring2 != nullptr) _spring2->update_force(_springParticles[1]);
+	//	if (_spring3 != nullptr) _spring3->update_force(_springParticles[2]);
+	//}
+	//else if (_tipo == 'b')
+	//{
+	//	if (_buoyancy != nullptr) _buoyancy->update_force(_particles.front());
+	//}
 
 	for (auto p = _particles.begin(); p != _particles.end();)
 	{
 		(*p)->update(t);
 
-		if ((*p)->time_alive() >= _lifeTime)
+		if (_lifeTime < 1000 && (*p)->time_alive() >= _lifeTime)
 		{
 			delete *p;
 			p = _particles.erase(p);

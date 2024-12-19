@@ -1,33 +1,32 @@
 #include "BuoyancyForceGenerator.h"
 #include "Particle.h"
 
-BuoyancyForceGenerator::BuoyancyForceGenerator(const float maxDepth, const float volume, const float liquidDensity) :
+BuoyancyForceGenerator::BuoyancyForceGenerator(DynamicRigidBody* w, const float maxDepth, const float volume, const float liquidDensity) :
 	_height(maxDepth),
 	_volume(volume),
 	_liquidDensity(liquidDensity),
-	_gravity(1.0f)
+	_gravity(1.0f),
+	_particle(w)
 {
-	_particle = new Particle(Vector3(0, 0, 0), 0.99, 1, Vector4(0, 0, 1, 1), 20, 1, 20);
 }
 
 BuoyancyForceGenerator::~BuoyancyForceGenerator()
-{
-	delete _particle;
-	_particle = nullptr;
-}
+= default;
 
 void BuoyancyForceGenerator::apply_force_particle(double t) const
 {
 }
 
-void BuoyancyForceGenerator::apply_force_dynamics() const
+void BuoyancyForceGenerator::apply_force_dynamics(double t) const
 {
 }
 
-void BuoyancyForceGenerator::update_force(Particle* particle) const
+void BuoyancyForceGenerator::update_force(const DynamicRigidBody* particle) const
 {
-	const float h = particle->position().y;
-	const float h0 = _particle->position().y;
+	const float h = (_particle->position() - particle->position()).magnitude();
+	const float h0 = _particle->geometry().sphere().radius;
+
+	//const Vector3 v = particle->position() - _particle->position();
 
 	Vector3 force = Vector3(0, 0, 0);
 	float immersed = 0.0f;
@@ -45,7 +44,7 @@ void BuoyancyForceGenerator::update_force(Particle* particle) const
 		immersed = (h0 - h) / _height + 0.5;
 	}
 
-	force.y = _liquidDensity * _volume * _gravity * immersed;
+	force = _liquidDensity * _volume * _gravity * immersed * -(_particle->position() - particle->position()).getNormalized();
 
-	particle->apply_force(force);
+	particle->add_force(force);
 }

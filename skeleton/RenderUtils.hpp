@@ -8,6 +8,12 @@ class RenderItem;
 void RegisterRenderItem(const RenderItem* _item);
 void DeregisterRenderItem(const RenderItem* _item);
 
+struct Ground
+{
+	bool grounded;
+	Vector3 position;
+};
+
 class RenderItem
 {
 public:
@@ -59,9 +65,13 @@ public:
 	unsigned references;
 };
 
+void passiveMotionCallback(int x, int y);
+
 double GetLastTime();
 Camera* GetCamera();
 
 physx::PxShape* CreateShape(const physx::PxGeometry& geo, const physx::PxMaterial* mat = nullptr);
+
+physx::PxQuat Slerp(const physx::PxQuat& q1, const physx::PxQuat& q2, float t);
 
 #endif

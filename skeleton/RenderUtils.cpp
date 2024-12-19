@@ -21,6 +21,9 @@ double PCFreq = 0.0;
 __int64 CounterStart = 0;
 __int64 CounterLast = 0;
 
+double mouseX = 0;
+double mouseY = 0;
+
 void StartCounter()
 {
 	LARGE_INTEGER li;
@@ -49,7 +52,7 @@ namespace
 
 void motionCallback(int x, int y)
 {
-	sCamera->handleMotion(x, y);
+	//sCamera->handleMotion(x, y);
 }
 
 void keyboardCallback(unsigned char key, int x, int y)
@@ -137,16 +140,22 @@ void exitCallback(void)
 void renderLoop()
 {
 	StartCounter();
+
 	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
 
-	setupDefaultWindow("Simulacion Fisica Videojuegos");
+	setupDefaultWindow("INNER WILDS");
 	setupDefaultRenderState();
+
+	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	glutIdleFunc(idleCallback);
 	glutDisplayFunc(renderCallback);
 	glutKeyboardFunc(keyboardCallback);
 	glutMouseFunc(mouseCallback);
 	glutMotionFunc(motionCallback);
+	//glutPassiveMotionFunc(passiveMotionCallback);
 	motionCallback(0,0);
 
 	atexit(exitCallback);
@@ -164,6 +173,11 @@ void DeregisterRenderItem(const RenderItem* _item)
 {
 	auto it = find(gRenderItems.begin(), gRenderItems.end(), _item);
 	gRenderItems.erase(it);
+}
+
+void passiveMotionCallback(int x, int y)
+{
+	sCamera->handleMotion(x, y);
 }
 
 double GetLastTime()
@@ -184,4 +198,28 @@ PxShape* CreateShape(const PxGeometry& geo, const PxMaterial* mat)
 
 	PxShape* shape = gPhysics->createShape(geo, *mat);
 	return shape;
+}
+
+physx::PxQuat Slerp(const physx::PxQuat& q1, const physx::PxQuat& q2, float t)
+{
+	// Asegurar que el producto escalar esté en el rango [-1, 1]
+	float dot = q1.dot(q2);
+	const float threshold = 0.9995f;
+
+	// Si el ángulo es muy pequeño, usar interpolación lineal (LERP)
+	if (dot > threshold)
+	{
+		physx::PxQuat result = q1 + (q2 - q1) * t;
+		result.normalize();
+		return result;
+	}
+
+	// Si el ángulo es mayor, usar SLERP
+	dot = physx::PxClamp(dot, -1.0f, 1.0f);
+	float theta_0 = acos(dot);        // Ángulo entre los cuaterniones
+	float theta = theta_0 * t;       // Ángulo interpolado
+	physx::PxQuat q3 = q2 - q1 * dot;
+	q3.normalize();
+
+	return q1 * cos(theta) + q3 * sin(theta);
 }

@@ -2,16 +2,18 @@
 #include <iostream>
 
 Particle::Particle(const physx::PxVec3& pos, const physx::PxVec3& vel, const physx::PxVec3& acc, double d, double m, const physx::PxVec4& color, const float r) :
+	g(),
 	_lifeTime(0), _vel(vel), _force(0, 0, 0), _acc(acc), _damp(d), _mass(m)
 {
 	_pos = new physx::PxTransform(pos);
 
-	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(r));
+	_shape = CreateShape(physx::PxSphereGeometry(r));
 
-	_ri = new RenderItem(shape, _pos, color);
+	_ri = new RenderItem(_shape, _pos, color);
 }
 
 Particle::Particle(const physx::PxVec3& pos, double d, double m, physx::PxVec4 color, double x, double y, double z) :
+	g(),
 	_lifeTime(0), _vel(Vector3()), _force(0, 0, 0), _acc(Vector3()), _damp(d), _mass(m)
 {
 	_pos = new physx::PxTransform(pos);
@@ -28,6 +30,9 @@ Particle::~Particle()
 
 	delete _pos;
 	_pos = nullptr;
+
+	_shape->release();
+	_shape = nullptr;
 }
 
 void Particle::integrate(const double t)

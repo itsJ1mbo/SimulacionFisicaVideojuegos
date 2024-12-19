@@ -287,8 +287,9 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Display text
-	glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
-	drawText(display_text, 0, 0);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	drawText("INNER WILDS", glutGet(GLUT_WINDOW_WIDTH) / 7, glutGet(GLUT_WINDOW_HEIGHT) / 3);
+	drawText(display_text, glutGet(GLUT_WINDOW_WIDTH) / 7, glutGet(GLUT_WINDOW_HEIGHT) / 4);
 
 	// Setup camera
 	glMatrixMode(GL_PROJECTION);

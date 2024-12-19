@@ -10,9 +10,11 @@ public:
 
 	void update(double t) override;
 	void generate() override;
-	void move() const;
+	void move(int dir) const;
 	DynamicRigidBody* player() const { return _dynamics.back(); }
 private:
 	RocketForce* _rocket;
+	Vector3 _camVector;
+	double _time;
 };
 

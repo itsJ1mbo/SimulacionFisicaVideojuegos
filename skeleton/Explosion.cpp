@@ -3,7 +3,7 @@
 #include <cmath>
 
 Explosion::Explosion(double R, const physx::PxVec3& c, double K, double t) :
-	_radius(R), _center(c), _K(K), _t(t)
+	_radius(R), _center(c), _k(K), _t(t)
 {
 
 }
@@ -17,11 +17,30 @@ void Explosion::apply_force_particle(double t) const
 			const Vector3 pos = p->position();
 			if (r(pos) < _radius)
 			{
-				const Vector3 explosiveForce = (_K / pow(r(pos), 2)) * 
+				const Vector3 explosiveForce = _k / pow(r(pos), 2) * 
 												Vector3(pos.x - _center.x, pos.y - _center.y, pos.z - _center.z) * 
 												pow(E, -t / _t);
 
 				p->apply_force(explosiveForce);
+			}
+		}
+	}
+}
+
+void Explosion::apply_force_dynamics(double t) const
+{
+	for (const auto rbs : _rbs)
+	{
+		for (const auto rb : rbs->dynamics())
+		{
+			const Vector3 pos = rb->position();
+			if (r(pos) < _radius)
+			{
+				const Vector3 explosiveForce = _k / pow(r(pos), 2) *
+					Vector3(pos.x - _center.x, pos.y - _center.y, pos.z - _center.z) *
+					pow(E, -t / _t);
+
+				rb->add_force(explosiveForce);
 			}
 		}
 	}

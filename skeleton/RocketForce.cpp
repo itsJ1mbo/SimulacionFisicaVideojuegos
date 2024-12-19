@@ -14,7 +14,7 @@ void RocketForce::apply_force_particle(double t) const
 {
 }
 
-void RocketForce::apply_force_dynamics() const
+void RocketForce::apply_force_dynamics(double t) const
 {
 	for (const auto& rbs : _rbs)
 	{

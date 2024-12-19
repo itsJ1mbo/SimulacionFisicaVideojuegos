@@ -8,6 +8,7 @@ DynamicRigidBody::DynamicRigidBody(physx::PxScene* scene, physx::PxPhysics* phys
 	const Vector3& pos, 
 	const physx::PxGeometry& geometry, const physx::PxMaterial* mat, const Vector4& color, 
 	const double d, const double m) :
+		g(),
 		_actor(nullptr),
 		_tr(new physx::PxTransform(pos)),
 		_ri(nullptr)

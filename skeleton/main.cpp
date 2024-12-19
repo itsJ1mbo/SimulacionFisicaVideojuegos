@@ -12,15 +12,12 @@
 
 #include "Particle.h"
 #include "AliExpressParticleSystem.h"
-#include "Gravity.h"
-#include "Wind.h"
-#include "Whirlwind.h"
 #include "Explosion.h"
 #include "DynamicRigidBody.h"
 #include "PlayerSystem.h"
 #include "StellarSystem.h"
 
-std::string display_text = "This is a test";
+std::string display_text = "PRESS ANY KEY TO START";
 
 #define M_PI 3.14159265358979323846
 
@@ -55,10 +52,14 @@ ContactReportCallback gContactReportCallback;
 static StellarSystem* ss = nullptr;
 static PlayerSystem* ps = nullptr;
 static DynamicRigidBody* player = nullptr;
+static bool intro = true;
+static PxReal scaler = 300;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
+	glutFullScreen();
+
 	PX_UNUSED(interactive);
 
 	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gAllocator, gErrorCallback);
@@ -85,24 +86,15 @@ void initPhysics(bool interactive)
 	whirlwind = new Whirlwind(0.5, 0.1, Vector3(-100, -100, -100), Vector3(100, 100, 100), 2, Vector3(0, 0, 0));
 	explosion = new Explosion(100, Vector3(0, 0, 0), 1000, 2);*/
 
-
-	ps = new PlayerSystem(Vector3(4500, 50, 1), gPhysics, gScene);
+	ps = new PlayerSystem(Vector3(6000, 300, 0), gPhysics, gScene);
 	ps->generate();
-	double orbitalSpeed = sqrt((G * 4e15) / 4500);
 
-	/*physx::PxVec3 tangentialVelocity = (player->position() - Vector3(0, 0, 0)).getNormalized().cross(Vector3(0, 1, 0));
-	tangentialVelocity.normalize();
-	tangentialVelocity *= orbitalSpeed;
-	player->set_linear_velocity(-tangentialVelocity);*/
-
-	//std::cout << player->position().x << " " << player->position().y << " " << player->position().z << std::endl;
-
-	ss = new StellarSystem(Vector3(0, 0, 0), gPhysics, gScene, ps->player());
+	ss = new StellarSystem(Vector3(0, 0, 0), gPhysics, gScene, nullptr);
 	ss->generate();
 
-	
+	GetCamera()->set_eye(Vector3(0, 10000, -1));
+	GetCamera()->set_dir(-Vector3(0, 10000, -1));
 }
-
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
@@ -110,11 +102,11 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-	gScene->simulate(t);
+	gScene->simulate(t * scaler);
 	gScene->fetchResults(true);
 
 	ss->update(t);
-	ps->update(t);
+	if (!intro) ps->update(t);
 	//std::cout << player->position().x << " " << player->position().y << " " << player->position().z << std::endl;
 # pragma region curso
 	/*;
@@ -165,54 +157,28 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
+	if (intro)
+	{
+		GetCamera()->set_eye(Vector3(6000, 120, 50));
+		GetCamera()->set_dir(Vector3(1, 0, 0));
+		ss->set_player(ps->player());
+		glutPassiveMotionFunc(passiveMotionCallback);
+		scaler = 1;
+		intro = false;
+	}
+
 	switch(toupper(key))
 	{
 	case 'O':
 	{
-		ps->move();
+		ps->move(1);
 		break;
 	}
-	case 'F':
+	case 'L':
 	{
-		/*if (ps != nullptr) delete ps;
-		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'f');
-		gravity->register_particle_system(ps);
-		whirlwind->register_particle_system(ps);*/
+		ps->move(-1);
 		break;
 	}
-	/*case 'N':
-	{
-		if (ps != nullptr) delete ps;
-		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'n');
-		explosion->register_particle_system(ps);
-		gravity->register_particle_system(ps);
-		break;
-	}
-	case 'E':
-	{
-		if (ps != nullptr) delete ps;
-		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'e');
-		wind->register_particle_system(ps);
-		break;
-	}
-	case 'M':
-	{
-		if (ps != nullptr) delete ps;
-		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'm');
-		gravity->register_particle_system(ps);
-		break;
-	}
-	case 'B':
-	{
-		if (ps != nullptr) delete ps;
-		ps = new AliExpressParticleSystem(physx::PxVec3(0.0, 0.0, 0.0), 'b');
-		gravity->register_particle_system(ps);
-		break;
-	}
-	case 'P':
-	{
-		lighted = true;
-	}*/
 	default:
 		break;
 	}
@@ -227,7 +193,7 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 
 int main(int, const char*const*)
 {
-#ifndef OFFLINE_EXECUTION 
+#ifndef OFFLINE_EXECUTION
 	extern void renderLoop();
 	renderLoop();
 #else

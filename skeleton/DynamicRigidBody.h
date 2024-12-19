@@ -1,11 +1,12 @@
 #pragma once
 #include "core.hpp"
-
-class RenderItem;
+#include "RenderUtils.hpp"
 
 class DynamicRigidBody
 {
 public:
+	Ground g;
+
 	DynamicRigidBody(physx::PxScene* scene, physx::PxPhysics* physics, const Vector3& pos, const physx::PxGeometry& geometry, 
 		const physx::PxMaterial* mat,
 		const Vector4& color, 
@@ -14,7 +15,7 @@ public:
 
 	void add_force(const Vector3& force) const;
 
-	Vector3 position() const { return _actor->getGlobalPose().p; }
+	physx::PxVec3 position() const { return _actor->getGlobalPose().p; }
 	float mass() const { return _actor->getMass(); }
 	Vector3 velocity() const { return _actor->getLinearVelocity(); }
 	physx::PxGeometryHolder geometry() const { return _shape->getGeometry(); }

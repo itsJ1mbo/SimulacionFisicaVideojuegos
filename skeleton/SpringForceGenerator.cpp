@@ -34,6 +34,6 @@ void SpringForceGenerator::apply_force_particle(double t) const
 	}*/
 }
 
-void SpringForceGenerator::apply_force_dynamics() const
+void SpringForceGenerator::apply_force_dynamics(double t) const
 {
 }
