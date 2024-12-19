@@ -75,7 +75,7 @@ void StellarSystem::create_star()
 	_star.radius = 2000;
 	_star.rb = new StaticRigidBody(_scene, _physics, _tr->p, physx::PxSphereGeometry(_star.radius), Vector4(1, 0, 0, 1));
 	_star.mass = 4e15;
-	_star.ps = new AliExpressParticleSystem(_tr->p, 'f', 10); 
+	_star.ps = new AliExpressParticleSystem(_tr->p, 10);
 	_star.exploded = false;
 }	
 
@@ -107,6 +107,7 @@ void StellarSystem::generate()
 	_buoyancy = new BuoyancyForceGenerator(_water, 90, 950.0f, 1000);
 	_waterTr = new physx::PxTransform(_water->position());
 	RenderItem* ri = new RenderItem(CreateShape(physx::PxSphereGeometry(250)), _waterTr, Vector4(0, 0, 1, 1));
+	create_planet(Vector3(10000, 0, 0), 25, 3e10, Vector4(1.0f, 0.4f, 0.7f, 1.0f));
 
 	_buoyancy->register_rb_system(this);
 	set_gravities();

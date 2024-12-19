@@ -288,8 +288,8 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 
 	// Display text
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	drawText("INNER WILDS", glutGet(GLUT_WINDOW_WIDTH) / 7, glutGet(GLUT_WINDOW_HEIGHT) / 3);
-	drawText(display_text, glutGet(GLUT_WINDOW_WIDTH) / 7, glutGet(GLUT_WINDOW_HEIGHT) / 4);
+	drawText("INNER WILDS", 0, glutGet(GLUT_WINDOW_HEIGHT) / 2, 2.3f);
+	drawText(display_text, glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 3, 0.2f);
 
 	// Setup camera
 	glMatrixMode(GL_PROJECTION);
@@ -300,7 +300,7 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 	glLoadIdentity();
 	gluLookAt(GLdouble(cameraEye.x), GLdouble(cameraEye.y), GLdouble(cameraEye.z), GLdouble(cameraEye.x + cameraDir.x), GLdouble(cameraEye.y + cameraDir.y), GLdouble(cameraEye.z + cameraDir.z), 0.0, 1.0, 0.0);
 
-	glColor4f(0.4f, 0.4f, 0.4f, 1.0f);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	assert(glGetError() == GL_NO_ERROR);
 }
@@ -383,24 +383,25 @@ void finishRender()
 	glutSwapBuffers();
 }
 
-void drawText(const std::string& text, int x, int y)
+void drawText(const std::string& text, float x, float y, float scale)
 {
 	glMatrixMode(GL_PROJECTION);
 	double* matrix = new double[16];
 	glGetDoublev(GL_PROJECTION_MATRIX, matrix);
 	glLoadIdentity();
-	glOrtho(0, 512, 0, 512, -5, 5);
+	glOrtho(0, 1920, 0, 1080, -1, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
 	glPushMatrix();
-	//glLoadIdentity();
-	glRasterPos2i(x, y);
+	glColor4f(255.0f, 255.0f, 255.0f, 1.0f);
+	glTranslatef(x, y, 0);
+	glScalef(scale, scale, scale);
 
-	int length = text.length();
-
-	for (int i = 0; i < length; i++) {
-		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (int)text[i]);
+	for (char c : text) {
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, c);
 	}
+
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixd(matrix);

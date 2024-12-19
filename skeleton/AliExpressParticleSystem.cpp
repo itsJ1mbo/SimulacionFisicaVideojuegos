@@ -163,6 +163,8 @@ physx::PxVec3 AliExpressParticleSystem::vel_by_distribution()
 		return physx::PxVec3(x(_gen), y(_gen), z(_gen));
 	}
 	else return {};*/
+
+	return {};
 }
 
 void AliExpressParticleSystem::particle_properties()
