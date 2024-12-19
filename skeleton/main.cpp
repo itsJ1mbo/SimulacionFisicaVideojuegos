@@ -17,7 +17,7 @@
 #include "PlayerSystem.h"
 #include "StellarSystem.h"
 
-std::string display_text = "";
+std::string display_text = "PRESS ANY KEY TO ENTER THE UNKNOWN";
 std::string title = "INNER WILDS";
 
 #define M_PI 3.14159265358979323846
