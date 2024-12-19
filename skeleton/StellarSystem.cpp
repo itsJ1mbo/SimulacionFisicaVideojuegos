@@ -111,20 +111,16 @@ DynamicRigidBody* StellarSystem::create_planet(const float a, const float b, con
 	double d = m /
 		((4.0 / 3.0) * physx::PxPi * std::pow(r, 3));
 
-	physx::PxVec3 posOnOrbit = _star.rb->position() + physx::PxVec3(
-		a * cos(0),
-		0.0,
-		b * sin(0)
-	);
+	physx::PxVec3 orbitPos = _star.rb->position() + physx::PxVec3(a * cos(0), 0.0, b * sin(0));
 
 	physx::PxMaterial* mat = _physics->createMaterial(0.5, 0.5, 0.0);
-	DynamicRigidBody* p = new DynamicRigidBody(_scene, _physics, posOnOrbit, physx::PxSphereGeometry(r), mat, color, d, m);
+	DynamicRigidBody* p = new DynamicRigidBody(_scene, _physics, orbitPos, physx::PxSphereGeometry(r), mat, color, d, m);
 
-	double eR = (posOnOrbit - _star.rb->position()).magnitude();
+	double eR = (orbitPos - _star.rb->position()).magnitude();
 
 	double orbitalSpeed = sqrt((G * _star.mass) * (2.0 / eR - 1.0 / a));
 
-	physx::PxVec3 radialDirection = (posOnOrbit - _star.rb->position()).getNormalized();
+	physx::PxVec3 radialDirection = (orbitPos - _star.rb->position()).getNormalized();
 	physx::PxVec3 tangentialVelocity = radialDirection.cross(physx::PxVec3(0, 1, 0));
 	tangentialVelocity.normalize();
 	tangentialVelocity *= orbitalSpeed;
@@ -150,7 +146,7 @@ void StellarSystem::generate()
 	create_planet(4500, 3000, 50, 1.47e10, Vector4(0, 1, 0, 1));
 
 	_water = create_planet(7000, 2000, 200, 2.47e10, Vector4(0, 0, 1, 1));
-	_buoyancy = new BuoyancyForceGenerator(_water, 90, 950.0f, 1000);
+	_buoyancy = new BuoyancyForceGenerator(_water, 90, 999.0f, 1000);
 	_waterTr = new physx::PxTransform(_water->position());
 	RenderItem* ri = new RenderItem(CreateShape(physx::PxSphereGeometry(250)), _waterTr, Vector4(0, 0, 1, 1));
 

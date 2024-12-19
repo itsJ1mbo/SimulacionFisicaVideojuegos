@@ -203,11 +203,9 @@ PxShape* CreateShape(const PxGeometry& geo, const PxMaterial* mat)
 
 physx::PxQuat Slerp(const physx::PxQuat& q1, const physx::PxQuat& q2, float t)
 {
-	// Asegurar que el producto escalar esté en el rango [-1, 1]
 	float dot = q1.dot(q2);
 	const float threshold = 0.9995f;
 
-	// Si el ángulo es muy pequeño, usar interpolación lineal (LERP)
 	if (dot > threshold)
 	{
 		physx::PxQuat result = q1 + (q2 - q1) * t;
@@ -215,10 +213,9 @@ physx::PxQuat Slerp(const physx::PxQuat& q1, const physx::PxQuat& q2, float t)
 		return result;
 	}
 
-	// Si el ángulo es mayor, usar SLERP
 	dot = physx::PxClamp(dot, -1.0f, 1.0f);
-	float theta_0 = acos(dot);        // Ángulo entre los cuaterniones
-	float theta = theta_0 * t;       // Ángulo interpolado
+	float theta_0 = acos(dot);      
+	float theta = theta_0 * t;  
 	physx::PxQuat q3 = q2 - q1 * dot;
 	q3.normalize();
 
